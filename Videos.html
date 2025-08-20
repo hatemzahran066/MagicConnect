@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Magic Connect</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet" />
+<script src="//ssl.p.jwpcdn.com/player/v/8.26.0/jwplayer.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+<script>jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';</script>
+
+<style>
+header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: linear-gradient(to left, #333, #333);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  margin-bottom: 10px;
+  font-family: 'Cairo', sans-serif;
+}
+
+header i {
+  font-size: 20px;
+  cursor: pointer;
+  
+}
+
+header h1 {
+  margin: 0;
+  font-size: 20px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.header-buttons {
+  background: none;
+      border: none;
+      color: var(--light);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.header-buttons a {
+  color: white;
+  font-size: 22px;
+  text-decoration: none;
+  transition: color 0.3s;
+  
+}
+
+.header-buttons a:hover {
+  color: #cfd8dc;
+}
+
+body {
+  background-color: #0f0f0f;
+  color: #fff;
+  font-family: 'Cairo', sans-serif;
+  margin: 0;
+}
+
+#container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap: 15px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.card {
+  background: #272727;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+}
+
+/* إزالة التركيز التلقائي واللون الأزرق */
+.card:focus,
+.card:focus-visible,
+.card:hover,
+.card.active {
+  outline: none;
+  border-color: rgba(255,255,255,0.2); /* تغيير اللون الأزرق إلى رمادي فاتح */
+  box-shadow: 0 2px 8px rgba(255,255,255,0.1); /* إضافة ظل خفيف بدلاً من الأزرق */
+}
+
+.card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  filter: none;
+}
+
+.card .content {
+  padding: 10px;
+}
+
+.card .title {
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card .category {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.9rem;
+}
+
+/* مودال */
+#modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  flex-direction: column;
+}
+
+#modal.active {
+  display: flex;
+}
+
+#modal-content {
+  position: relative;
+  width: 90vw;
+  max-width: 960px;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border: 1px solid #333;
+}
+
+/* المشغل */
+#player {
+  width: 100%;
+  height: 100%;
+}
+
+/* ستايل المشغل */
+.jwplayer .jw-controlbar {
+  background-color: rgba(0, 0, 0, 0.85) !important;
+}
+
+.jwplayer .jw-icon {
+  color: #fff !important;
+}
+
+.jwplayer .jw-button-color:hover {
+  color: #cc2222 !important;
+}
+
+.jwplayer .jw-progress {
+  background-color: #fff !important;
+}
+
+.jwplayer .jw-progress .jw-buffer {
+  background-color: #fff !important;
+}
+
+.jwplayer .jw-progress .jw-play-progress {
+  background-color: #fff !important;
+}
+
+.jwplayer .jw-slider-time .jw-knob {
+  background-color: #fff !important;
+  border: 2px solid #fff;
+}
+
+.jwplayer .jw-display-icon-container {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+}
+
+.jwplayer .jw-media video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+/* زر الإغلاق */
+#modal-close-x {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: none;
+  transition: background-color 0.2s ease;
+}
+
+#modal-close-x:hover,
+#modal-close-x:focus {
+  background: #a11a1a;
+  outline: none;
+}
+
+/* Loader التحميل التلقائي */
+#infiniteLoader {
+  display: none;
+  text-align: center;
+  padding: 15px;
+  color: #aaa;
+  font-size: 14px;
+}
+
+#infiniteLoader .dot {
+  height: 10px;
+  width: 10px;
+  margin: 0 3px;
+  background-color: #aaa;
+  border-radius: 50%;
+  display: inline-block;
+  animation: bounce 0.6s infinite alternate;
+}
+
+#infiniteLoader .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+#infiniteLoader .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  to { transform: translateY(-5px); opacity: 0.5; }
+}
+
+/* زر الصعود للأعلى */
+#scrollToTop {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #333;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #444;
+  outline: none;
+}
+
+#scrollToTop.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#scrollToTop:hover {
+  background-color: #333;
+}
+
+/* رسائل الخطأ */
+.error-message {
+  text-align: center;
+  padding: 20px;
+  color: #cc2222;
+  grid-column: 1 / -1;
+}
+
+.rotate {
+  animation: spin 0.6s linear;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+</head>
+<body>
+  
+<header>
+  <div class="header-buttons">
+    <span id="refreshIcon" class="refresh-icon"><i class="fa fa-refresh"></i></span>
+  </div>
+  <h1>Magic Connect</h1>
+  <div class="header-buttons">
+    <a href="go:services"><i class="fas fa-arrow-left"></i></a>
+  </div>
+</header>
+
+<div id="container" aria-live="polite"></div>
+
+<!-- Loader التحميل التلقائي -->
+<div id="infiniteLoader">
+  <span class="dot"></span>
+  <span class="dot"></span>
+  <span class="dot"></span>
+</div>
+
+<!-- مودال المشغل -->
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div id="modal-content">
+    <button id="modal-close-x" aria-label="إغلاق الفيديو">×</button>
+    <div id="player"></div>
+  </div>
+</div>
+
+<!-- زر الصعود للأعلى فقط -->
+<button id="scrollToTop" aria-label="الصعود إلى الأعلى"><i class="fas fa-arrow-up"></i></button>
+
+<script>
+const container = document.getElementById('container');
+const modal = document.getElementById('modal');
+const modalCloseX = document.getElementById('modal-close-x');
+const infiniteLoader = document.getElementById('infiniteLoader');
+const scrollToTopBtn = document.getElementById('scrollToTop');
+
+let playerInstance = null;
+let currentFit = localStorage.getItem('videoFit') || 'fill';
+let currentPage = 1;
+let isLoading = false;
+let focusedCardIndex = 0;
+let cards = [];
+let lastFocusedCard = null;
+let autoLoadEnabled = true; // التحميل التلقائي مفعل افتراضياً
+
+// دالة جديدة لجلب البيانات من مصادر متعددة
+async function fetchVideosFromMultipleSources(page) {
+  const sources = [
+    `https://ko.best-goal.live/videos.php?pages=${page}`,
+    `https://free1.best-goal.live/videos.php?pages=${page}`,
+    `https://free2.best-goal.live/videos.php?pages=${page}`
+  ];
+  
+  const errors = [];
+  
+  for (const source of sources) {
+  try {
+    const proxyUrl = 'https://corsproxy.io/?';
+    const res = await fetch(proxyUrl + encodeURIComponent(source));
+    
+    if (!res.ok) {
+      throw new Error(`خطأ في الاستجابة: ${res.status}`);
+    }
+    
+    const data = await res.json();
+    
+    if (Array.isArray(data) && data.length > 0) {
+      console.log(`تم جلب البيانات بنجاح من: ${source}`);
+      return data;
+    } else {
+      throw new Error('لا توجد بيانات في الاستجابة');
+    }
+  } catch (error) {
+    console.error(`فشل جلب البيانات من ${source}:`, error);
+    errors.push(error.message);
+  }
+  }
+  
+  throw new Error(`فشل في جلب البيانات من جميع المصادر: ${errors.join('; ')}`);
+}
+
+// دالة لعرض الفيديوهات
+function renderVideos(videos) {
+  videos.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.tabIndex = 0;
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-pressed', 'false');
+    card.setAttribute('data-item', JSON.stringify(item));
+    card.innerHTML = `
+      <img src="${item.imageurl}" alt="${item.title}" loading="lazy" />
+      <div class="content">
+        <div class="title" title="${item.title}">${item.title}</div>
+        <div class="category">${item.category || 'بدون تصنيف'}</div>
+      </div>
+    `;
+    card.addEventListener('click', () => {
+      focusCard(Array.from(cards).indexOf(card));
+      openModal(item);
+    });
+    container.appendChild(card);
+  });
+  
+  // تحديث مصفوفة البطاقات بعد التحميل
+  cards = document.querySelectorAll('.card');
+  
+  // إزالة التركيز التلقائي على أول بطاقة عند التحميل الأولي
+  // if (currentPage === 1 && cards.length > 0) {
+  //   focusCard(0);
+  // }
+  
+  // إذا كان التحميل التلقائي مفعل، قم بتحميل المزيد من الفيديوهات تلقائياً
+  if (autoLoadEnabled) {
+    setTimeout(() => {
+      if (!isLoading && shouldAutoLoadMore()) {
+        loadVideos();
+      }
+    }, 500);
+  }
+}
+
+// التحقق مما إذا كان يجب تحميل المزيد من الفيديوهات تلقائياً
+function shouldAutoLoadMore() {
+  // إذا كان المستخدم قريب من نهاية الصفحة أو الصفحة فارغة نسبياً
+  const scrollPosition = window.scrollY + window.innerHeight;
+  const pageHeight = document.body.offsetHeight;
+  const threshold = 300; // مسافة من الأسفل لتحميل المزيد
+  
+  return (pageHeight - scrollPosition) < threshold || pageHeight < window.innerHeight * 1.5;
+}
+
+function applyVideoFit() {
+  const video = document.querySelector('.jwplayer video');
+  if (video) {
+    video.style.objectFit = currentFit;
+  }
+}
+
+function toggleAspectRatio() {
+  currentFit = currentFit === 'fill' ? 'contain' : 'fill';
+  localStorage.setItem('videoFit', currentFit);
+  applyVideoFit();
+}
+
+function addAspectButton(player) {
+  player.addButton(
+    "https://img.icons8.com/ios-glyphs/24/ffffff/resize.png",
+    "تبديل الأبعاد",
+    toggleAspectRatio,
+    "aspect-toggle"
+  );
+}
+
+function setupMutationObserver() {
+  const observer = new MutationObserver(() => applyVideoFit());
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
+function setupFullscreenListener() {
+  ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'msfullscreenchange'].forEach(event => {
+    document.addEventListener(event, () => {
+      setTimeout(applyVideoFit, 200);
+    });
+  });
+}
+
+function updateScrollButtons() {
+  if (window.scrollY > 300) {
+    scrollToTopBtn.classList.add('visible');
+  } else {
+    scrollToTopBtn.classList.remove('visible');
+  }
+}
+
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+function focusCard(index) {
+  // إزالة التركيز من جميع البطاقات
+  if (cards.length === 0) return;
+  
+  cards.forEach(card => card.classList.remove('active'));
+  
+  // التأكد من أن الفهرس ضمن الحدود
+  if (index < 0) index = 0;
+  if (index >= cards.length) index = cards.length - 1;
+  
+  // تحديث الفهرس الحادي
+  focusedCardIndex = index;
+  
+  // إضافة التركيز على البطاقة المحددة
+  cards[focusedCardIndex].classList.add('active');
+  cards[focusedCardIndex].focus();
+  
+  // حفظ البطاقة المحددة
+  lastFocusedCard = cards[focusedCardIndex];
+  
+  // التمرير إلى البطاقة المحددة
+  cards[focusedCardIndex].scrollIntoView({
+    behavior: 'smooth',
+    block: 'nearest'
+  });
+}
+
+function handleKeyNavigation(e) {
+  if (modal.classList.contains('active')) return;
+  
+  if (cards.length === 0) return;
+  
+  switch(e.key) {
+    case 'ArrowUp':
+      e.preventDefault();
+      focusCard(focusedCardIndex - 1);
+      break;
+    case 'ArrowDown':
+      e.preventDefault();
+      focusCard(focusedCardIndex + 1);
+      break;
+    case 'ArrowLeft':
+      e.preventDefault();
+      focusCard(focusedCardIndex - 1);
+      break;
+    case 'ArrowRight':
+      e.preventDefault();
+      focusCard(focusedCardIndex + 1);
+      break;
+    case 'Enter':
+    case ' ':
+      if (document.activeElement.classList.contains('card')) {
+        e.preventDefault();
+        const item = JSON.parse(document.activeElement.getAttribute('data-item'));
+        openModal(item);
+      }
+      break;
+  }
+}
+
+async function loadVideos() {
+  if (isLoading) return;
+  isLoading = true;
+  infiniteLoader.style.display = 'block';
+
+  try {
+    const data = await fetchVideosFromMultipleSources(currentPage);
+
+    if (!Array.isArray(data) || data.length === 0) {
+      infiniteLoader.style.display = 'none';
+      
+      // إذا كانت هذه هي الصفحة الأولى ولم يتم العثور على فيديوهات
+      if (currentPage === 1) {
+        container.innerHTML = '<p class="error-message">لم يتم العثور على فيديوهات. يرجى المحاولة لاحقاً</p>';
+      }
+      
+      return;
+    }
+
+    // عرض الفيديوهات
+    renderVideos(data);
+    
+    currentPage++;
+  } catch (err) {
+    console.error(err);
+    if (currentPage === 1) {
+      container.innerHTML = '<p class="error-message">حدث خطأ أثناء تحميل البيانات: ' + err.message + '</p>';
+    }
+  } finally {
+    isLoading = false;
+    infiniteLoader.style.display = 'none';
+  }
+}
+
+function openModal(item) {
+  modal.classList.add('active');
+  modalCloseX.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+
+  if (!playerInstance) {
+    playerInstance = jwplayer("player");
+    playerInstance.setup({
+      file: item.m3u8_url || item.videoUrl || '',
+      image: item.imageurl || '',
+      width: "100%",
+      height: "100%",
+      autostart: true,
+      mute: false,
+      controls: true,
+      stretching: 'uniform',
+    });
+    addAspectButton(playerInstance);
+    playerInstance.on('ready', applyVideoFit);
+    playerInstance.on('play', applyVideoFit);
+    playerInstance.on('fullscreen', applyVideoFit);
+  } else {
+    playerInstance.load({
+      file: item.m3u8_url || item.videoUrl || '',
+      image: item.imageurl || '',
+      autostart: true,
+      mute: false,
+      controls: true,
+      width: "100%",
+      height: "100%",
+      stretching: 'uniform',
+    });
+  }
+}
+
+function closeModal() {
+  if (playerInstance) {
+    playerInstance.remove();
+    playerInstance = null;
+  }
+  modal.classList.remove('active');
+  modalCloseX.style.display = 'none';
+  document.body.style.overflow = '';
+  
+  // إعادة التركيز على البطاقة الأخيرة التي كانت محددة قبل فتح المودال
+  if (lastFocusedCard) {
+    lastFocusedCard.classList.add('active');
+    lastFocusedCard.focus();
+  }
+}
+
+// إضافة مستمعي الأحداث
+modalCloseX.addEventListener('click', closeModal);
+modalCloseX.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    closeModal();
+  }
+});
+
+modal.addEventListener('click', e => {
+  if (e.target === modal) closeModal();
+});
+
+document.addEventListener('keydown', handleKeyNavigation);
+
+// أحداث التمرير
+window.addEventListener('scroll', () => {
+  updateScrollButtons();
+  
+  // إذا كان التحميل التلقائي مفعل وقريب من نهاية الصفحة
+  if (autoLoadEnabled && window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+    loadVideos();
+  }
+});
+
+scrollToTopBtn.addEventListener('click', scrollToTop);
+
+// تهيئة الأزرار عند التحميل
+updateScrollButtons();
+
+setupMutationObserver();
+setupFullscreenListener();
+
+// تحميل الفيديوهات الأولية
+loadVideos();
+
+// بهذا الكود المعدل:
+document.getElementById("refreshIcon").addEventListener("click", async function () {
+  const icon = this.querySelector("i");
+  icon.classList.add("rotate");
+  
+  // إعادة تعيين المتغيرات وإفراغ المحتوى
+  currentPage = 1;
+  container.innerHTML = '';
+  isLoading = false;
+  focusedCardIndex = 0;
+  lastFocusedCard = null;
+  
+  // إعادة تحميل البيانات
+  await loadVideos();
+  
+  // إيقاف دوران الأيقونة بعد الانتهاء
+  setTimeout(() => {
+    icon.classList.remove("rotate");
+  }, 600);
+});
+</script>
+</body>
+</html>
