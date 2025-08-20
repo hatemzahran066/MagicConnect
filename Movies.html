@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Connect</title>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- خط Montserrat -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        background-color: #0f0f0f;
+        font-family: 'Montserrat', sans-serif;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* الهيدر */
+    header {
+        background: linear-gradient(to left, #333, #333);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 12px;
+        font-size: 18px;
+        font-weight: bold;
+        height: 48px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    header .title {
+    	font-size: 20px;
+        flex: 1;
+        text-align: center;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    /* أزرار الهيدر */
+    .header-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header-btn:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* أنيميشن الدوران */
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .spin-animation {
+        animation: spin 0.7s linear;
+    }
+
+    /* الإطار */
+    iframe {
+        border: none;
+        flex: 1;
+        width: 100%;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <!-- زر الريفرش -->
+    <button class="header-btn" id="refreshIcon" onclick="reloadWithAnimation()">
+        <i class="fas fa-sync-alt"></i>
+    </button>
+
+    <div class="title">Magic Connect</div>
+
+    <!-- زر الرجوع -->
+    <button class="header-btn" onclick="goToPage('go:services')">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+</header>
+
+<iframe src="https://mv.hawaaytv.com/we_cima_mv.php?url=https%3A%2F%2Fwecima.video%2F&show_header=0&logo_name=Magic+Connect&primary_color=%23333333&secondary_color=%233498db&text_color=%23e0e0e0&text_color_hover=%23ffffff&background=%230f0f0f&category_bg=%23333333&category_text=%23ffffff&category_text_hover=%23ffffff&card_bg=%23444444&card_text=%23e0e0e0&card_text_hover=%23ffffff"></iframe>
+
+<script>
+function goToPage(url) {
+    window.location.href = url; // يرجع لصفحة معينة
+}
+
+function reloadWithAnimation() {
+    const icon = document.getElementById('refreshIcon').querySelector("i");
+    icon.classList.add('spin-animation');
+    setTimeout(() => {
+        location.reload();
+    }, 700); // نفس مدة الأنيميشن
+}
+</script>
+
+</body>
+</html>
