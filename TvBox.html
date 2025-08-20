@@ -37,6 +37,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       line-height: 1.6;
+      overflow: hidden;
     }
     
     /* Header */
@@ -90,6 +91,14 @@
     .header-btn:hover {
       background-color: rgba(255, 255, 255, 0.15);
     }
+    
+        
+    
+    /* استعادة التمرير بعد تحميل الصفحة */
+    body.loaded {
+      overflow: auto;
+    }
+    
     
     /* Main Content */
     .main-container {
@@ -942,6 +951,28 @@
 </div>
 
 <script>
+	// منع التمرير التلقائي عند تحميل الصفحة
+  document.addEventListener('DOMContentLoaded', function() {
+    // الانتقال إلى الأعلى فورًا
+    window.scrollTo(0, 0);
+    
+    // تمييز أن الصفحة قد تم تحميلها بالكامل
+    setTimeout(function() {
+      document.body.classList.add('loaded');
+      
+      // التركيز على أول بطاقة بعد التحميل
+      const firstCard = document.querySelector('.card');
+      if (firstCard) {
+        firstCard.focus();
+      }
+    }, 100);
+  });
+
+  // التأكد من البقاء في الأعلى حتى بعد اكتمال تحميل جميع الموارد
+  window.addEventListener('load', function() {
+    window.scrollTo(0, 0);
+  });
+	
   // Side Menu Toggle
   const menuBtn = document.getElementById('menuBtn');
   const closeMenu = document.getElementById('closeMenu');
@@ -1759,6 +1790,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+
 </script>
 </body>
 </html>
