@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magic Connect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #444;
+      --primary-light: #444;
+      --dark: #0f0f0f;
+      --card-bg: #272727;
+      --light: #ffffff;
+      --accent: #ff6b00;
+      --success: #00c853;
+      --text-primary: #e0e0e0;
+      --text-secondary: #b0b0b0;
+      --section-bg: #1a1a1a;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: var(--dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    
+    /* Header */
+    header {
+      background: linear-gradient(to left, #333, #333);
+      padding: 10px 16px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .header-left {
+      justify-self: start;
+    }
+    
+    .header-center {
+      justify-self: center;
+    }
+    
+    .header-right {
+      justify-self: end;
+    }
+    
+    .logo-text {
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: var(--light);
+    }
+    
+    .header-btn {
+      background: none;
+      border: none;
+      color: var(--light);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .header-btn:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    /* Main Content */
+    .main-container {
+      padding: 0;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    /* Section Styles */
+    .section {
+      padding: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+    }
+    
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--light);
+    }
+    
+    /* تعديلات زر عرض الكل - نسخة محترفة */
+.view-all {
+  color: var(--light);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  border-radius: 25px;
+  
+  position: relative;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+}
+
+.view-all::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.view-all:hover {
+  transform: translateY(-2px);
+  
+}
+
+.view-all:hover::before {
+  left: 100%;
+}
+
+.view-all i {
+  font-size: 0.7rem;
+  transition: transform 0.3s;
+  background: #666;
+  padding: 7px 9px;
+  border-radius: 50%;
+}
+
+.view-all:hover i {
+  transform: translateX(-3px);
+}
+    
+    /* Horizontal Slider */
+    .horizontal-slider {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      scroll-snap-type: x mandatory;
+    }
+    
+    .horizontal-slider::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    .horizontal-slider::-webkit-scrollbar-track {
+      background: #333;
+      border-radius: 5px;
+    }
+    
+    .horizontal-slider::-webkit-scrollbar-thumb {
+      background-color: #888;
+      border-radius: 5px;
+    }
+    
+    /* Card Styles */
+    .card {
+      min-width: 280px;
+      scroll-snap-align: start;
+      flex-shrink: 0;
+      background-color: #333;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      height: 100%;
+    }
+    
+    .card-image {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    
+    .card-content {
+      padding: 1rem;
+    }
+    
+    .card-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--light);
+      margin-bottom: 0.5rem;
+    }
+    
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.8rem;
+    }
+    
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    
+    .card-channels {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.8rem;
+    }
+    
+    .card-channels i {
+      color: #ddd;
+      font-size: 0.9rem;
+    }
+    
+    .card-badge {
+      background-color: #666;
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    
+    /* Grid Cards */
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.2rem;
+    }
+    
+    /* Side Menu */
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+}
+
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: 300px;
+  max-width: 85%;
+  height: 100%;
+  background-color: #1a1a1a;
+  z-index: 1000;
+  transition: left 0.3s ease;
+  box-shadow: 3px 0 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  border-right:1px solid #444;
+}
+
+.side-menu.active {
+  left: 0;
+}
+
+/* تأثير الضبابية للهيدر والصفحة */
+.header-blur {
+  filter: blur(4px);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.main-blur {
+  filter: blur(4px);
+  transition: all 0.3s ease;
+}
+    
+    .menu-header {
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--primary);
+      border-bottom: 1px solid #444;
+    }
+    
+    .menu-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--light);
+    }
+    
+    .close-menu {
+      background: none;
+      border: none;
+      color: var(--light);
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    
+    .close-menu:hover {
+      transform: rotate(90deg);
+    }
+    
+    .menu-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.1rem 0;
+    }
+    
+    
+    
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .grid-cards {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .card {
+        min-width: 260px;
+      }
+      
+      .card-image {
+        height: 140px;
+      }
+      
+      .grid-cards {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .grid-cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .section-title {
+        font-size: 1.3rem;
+      }
+      
+      .logo-text {
+        font-size: 1.2rem;
+      }
+    }
+    
+    /* Focus Styles for TV/Remote Navigation */
+    a:focus, button:focus, .card:focus {
+      outline: none;
+      
+      transform: scale(1.02);
+    }
+    
+    .card:focus {
+      transform: translateY(-5px) scale(1.02);
+    }
+    
+    /* Add this style for category titles */
+.section-header .section-title {
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.section-header .section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 50px;
+  height: 3px;
+  background-color: #999;
+  border-radius: 3px;
+}
+
+/* تأثير دوران أيقونة التحديث */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.refresh-spin {
+  animation: spin 0.5s linear 1;
+}
+
+
+
+/* Favorites and History Styles */
+.favorite-btn {
+  transition: all 0.3s ease;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.1);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-container {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  width: 90%;
+  max-width: 1000px;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: var(--primary);
+}
+
+.modal-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.modal-content {
+  overflow-y: auto;
+  max-height: calc(80vh - 60px);
+  padding: 15px;
+}
+
+/* Side Menu Items - Enhanced */
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1rem;
+  margin: 0.7rem 1rem;
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text-primary);
+  background: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  border-left: 5px solid #555; /* حدود يسارية زرقاء مع شفافية */
+  
+}
+
+.menu-item:hover {
+  border-left: 5px solid #999; /* حدود يسارية زرقاء مع شفافية */
+}
+
+.menu-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+  font-size: 1.2rem;
+  color: var(--light);
+  transition: all 0.3s ease;
+  
+}
+
+.menu-item:hover .menu-icon {
+  transform: scale(1.1);
+}
+
+.menu-text {
+  flex: 1;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.menu-item:hover .menu-text {
+  color: var(--light);
+}
+
+/* Add ripple effect */
+.menu-item::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.menu-item:focus:not(:active)::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+}
+
+/* Menu Header Enhancement */
+.menu-header {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #333;
+  
+}
+
+.menu-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--light);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.close-menu {
+  background: #555;
+  border: none;
+  color: var(--light);
+  font-size: 1.3rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.close-menu:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* Menu Footer Enhancement */
+.menu-footer {
+  padding: 1rem;
+  border-top: 1px solid #444;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+
+
+  </style>
+  
+  <style>
+/* إزالة الحواف الزرقاء من أزرار القائمة الجانبية */
+.menu-item:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* إضافة تأثير مخصص بدلاً من التأثير الافتراضي */
+.menu-item:focus {
+    background: #444 !important;
+    border-left: 5px solid #999 !important;
+}
+
+/* التأكد من إزالة التأثير من العناصر الأخرى */
+.menu-item:focus::after {
+    display: none !important;
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="header-left">
+    <button class="header-btn" id="refreshBtn">
+      <i class="fas fa-sync-alt"></i>
+    </button>
+  </div>
+  <div class="header-center">
+    <div class="logo-text">Magic Connect</div>
+  </div>
+  <div class="header-right">
+    <button class="header-btn" id="menuBtn">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="main-container">
+  <!-- Sports Packages Section -->
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">الباقات الرياضية</h2>
+      <a href="go:sports" class="view-all">
+        عرض الكل
+        <i class="fas fa-chevron-left"></i>
+      </a>
+    </div>
+    <div class="horizontal-slider">
+      <!-- Sport Package 1 -->
+      <div class="card">
+        <a href="go:todsp" class="card-link">
+          <img src="https://up6.cc/2025/08/175524999539551.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة beIN TOD</h3>
+            <p class="card-desc">أهم القنوات الرياضية العالمية</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>29 قناة</span>
+                </div>
+              </div>
+              <div class="card-badge">الأكثر مشاهدة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <!-- Sport Package 2 -->
+      <div class="card">
+        <a href="go:beinsport" class="card-link">
+          <img src="https://up6.cc/2025/08/175524987376131.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة beIN SPORTS</h3>
+            <p class="card-desc">القنوات الرياضية بجودات متعددة</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>10 سيرفرات</span>
+                </div>
+              </div>
+              <div class="card-badge">سيرفر VIP</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      
+      <div class="card">
+        <a href="go:thmanyahp" class="card-link">
+          <img src="https://up6.cc/2025/08/175562015765931.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة Thmanyah</h3>
+            <p class="card-desc">الدوري السعودي بجودات متعددة</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>3 قنوات</span>
+                </div>
+              </div>
+              <div class="card-badge">سيرفر خاص</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <!-- Sport Package 3 -->
+      <div class="card">
+        <a href="go:sscp" class="card-link">
+          <img src="https://up6.cc/2025/08/175524828730451.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة SSC SPORTS</h3>
+            <p class="card-desc">بطولات رياضية متنوعة</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>9 قنوات</span>
+                </div>
+              </div>
+              <div class="card-badge">جودات متعددة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <!-- Sport Package 4 -->
+      <div class="card">
+        <a href="go:adp" class="card-link">
+          <img src="https://up6.cc/2025/08/175524929303171.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة AD SPORTS</h3>
+            <p class="card-desc">مباريات الدوري الإيطالي</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>4 قنوات</span>
+                </div>
+              </div>
+              <div class="card-badge">جودات متعددة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    
+    <!-- Sport Package 5 -->
+      <div class="card">
+        <a href="go:alkassp" class="card-link">
+          <img src="https://up6.cc/2025/08/175524909983621.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة ALKASS SPORTS</h3>
+            <p class="card-desc">مباريات الدوري القطري</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>6 قنوات</span>
+                </div>
+              </div>
+              <div class="card-badge">جودات متعددة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Entertainment Packages Section -->
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">الباقات الترفيهية</h2>
+      <a href="go:enterphone" class="view-all">
+        عرض الكل
+        <i class="fas fa-chevron-left"></i>
+      </a>
+    </div>
+    <div class="horizontal-slider">
+      <!-- Entertainment Package 1 -->
+      <div class="card">
+        <a href="go:todep" class="card-link">
+          <img src="https://up6.cc/2025/08/175525128385391.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة beIN ENTERTAINMENT</h3>
+            <p class="card-desc">أحدث الأفلام العالمية بجودة عالية</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>33 قناة</span>
+                </div>
+              </div>
+              <div class="card-badge">الأكثر مشاهدة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <!-- Entertainment Package 2 -->
+      <div class="card">
+        <a href="go:artp" class="card-link">
+          <img src="https://up6.cc/2025/08/175525162192421.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة ART CHANNELS</h3>
+            <p class="card-desc">أحدث المسلسلات العربية والعالمية</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>5 قنوات</span>
+                </div>
+              </div>
+              <div class="card-badge">جودات متعددة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <!-- Entertainment Package 3 -->
+      <div class="card">
+        <a href="go:osnp" class="card-link">
+          <img src="https://up6.cc/2025/08/175525181672921.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة OSN CHANNELS</h3>
+            <p class="card-desc">أفضل القنوات العربية المتنوعة</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>20 قناة</span>
+                </div>
+              </div>
+              <div class="card-badge">جودات متعددة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <!-- Entertainment Package 4 -->
+      <div class="card">
+        <a href="go:shahidp" class="card-link">
+          <img src="https://up6.cc/2025/08/175525193301171.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة SHAHID CHANNELS</h3>
+            <p class="card-desc">أحدث الأفلام والمسلسلات الترفيهية</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>8 قنوات</span>
+                </div>
+              </div>
+              <div class="card-badge">جودات متعددة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Countries Packages Section -->
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">قنوات الدول</h2>
+      <a href="go:countries" class="view-all">
+        عرض الكل
+        <i class="fas fa-chevron-left"></i>
+      </a>
+    </div>
+    <div class="horizontal-slider">
+      <!-- Country Package 1 -->
+      <div class="card">
+        <a href="go:egyptp" class="card-link">
+          <img src="https://up6.cc/2025/08/175525478536991.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">القنوات المصرية</h3>
+            <p class="card-desc">أهم القنوات المصرية الرسمية</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>10 قنوات</span>
+                </div>
+              </div>
+              <div class="card-badge">جودات متعددة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <!-- Country Package 2 -->
+      <div class="card">
+        <a href="go:saudiap" class="card-link">
+          <img src="https://up6.cc/2025/08/175525489246681.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">القنوات السعودية</h3>
+            <p class="card-desc">أهم القنوات السعودية الرسمية</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>8 قنوات</span>
+                </div>
+              </div>
+              <div class="card-badge">جودات متعددة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <!-- Country Package 3 -->
+      <div class="card">
+        <a href="go:iraqp" class="card-link">
+          <img src="https://up6.cc/2025/08/175525502950671.png" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">القنوات العراقية</h3>
+            <p class="card-desc">أهم القنوات العراقية الرسمية</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>6 قنوات</span>
+                </div>
+              </div>
+              <div class="card-badge">جودات عالية</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <!-- Country Package 4 -->
+      <div class="card">
+        <a href="go:algeriap" class="card-link">
+          <img src="https://up6.cc/2025/08/175525520950281.jpeg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">القنوات الجزائرية</h3>
+            <p class="card-desc">أهم القنوات الجزائرية الرسمية</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>15 قناة</span>
+                </div>
+              </div>
+              <div class="card-badge">جودة عالية</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Other Packages Section -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">باقات أخرى</h2>
+    <a href="go:other" class="view-all">
+      عرض الكل
+      <i class="fas fa-chevron-left"></i>
+    </a>
+  </div>
+  <div class="horizontal-slider">
+    <!-- Kids Package -->
+    <div class="card">
+      <a href="go:kidsp" class="card-link">
+        <img src="https://up6.cc/2025/08/175525545425131.jpg" class="card-image">
+        <div class="card-content">
+          <h3 class="card-name">باقة الأطفال</h3>
+          <p class="card-desc">أفضل القنوات التعليمية والترفيهية</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <div class="card-channels">
+                <i class="fas fa-satellite-dish"></i>
+                <span>8 قنوات</span>
+              </div>
+            </div>
+            <div class="card-badge">جودات متعددة</div>
+          </div>
+        </div>
+      </a>
+    </div>
+    
+    <!-- Religious Package -->
+    <div class="card">
+      <a href="go:islamicp" class="card-link">
+        <img src="https://up6.cc/2025/08/175525560769161.jpg" class="card-image">
+        <div class="card-content">
+          <h3 class="card-name">الباقة الدينية</h3>
+          <p class="card-desc">قنوات دينية وقرآن كريم</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <div class="card-channels">
+                <i class="fas fa-satellite-dish"></i>
+                <span>5 قنوات</span>
+              </div>
+            </div>
+            <div class="card-badge">جودات متعددة</div>
+          </div>
+        </div>
+      </a>
+    </div>
+    
+    <!-- News Package -->
+    <div class="card">
+      <a href="go:newsp" class="card-link">
+        <img src="https://up6.cc/2025/08/175525642484121.jpg" class="card-image">
+        <div class="card-content">
+          <h3 class="card-name">الباقة الإخبارية</h3>
+          <p class="card-desc">أهم القنوات الإخبارية العربية</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <div class="card-channels">
+                <i class="fas fa-satellite-dish"></i>
+                <span>10 قنوات</span>
+              </div>
+            </div>
+            <div class="card-badge">جودات متعددة</div>
+          </div>
+        </div>
+      </a>
+    </div>
+    
+    <!-- يمكن إضافة المزيد من الباقات هنا -->
+    <div class="card">
+      <a href="go:documentp" class="card-link">
+        <img src="https://up6.cc/2025/08/175525672772671.jpeg" class="card-image">
+        <div class="card-content">
+          <h3 class="card-name">باقة القنوات الوثائقية</h3>
+          <p class="card-desc">أفضل القنوات الوثائقية العلمية</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <div class="card-channels">
+                <i class="fas fa-satellite-dish"></i>
+                <span>6 قنوات</span>
+              </div>
+            </div>
+            <div class="card-badge">جودات متعددة</div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+  
+  <!-- Sports Services Section -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">خدمات ترفيهية</h2>
+    <a href="go:services" class="view-all">
+      عرض الكل
+      <i class="fas fa-chevron-left"></i>
+    </a>
+  </div>
+  <div class="horizontal-slider">
+    <!-- Matches Schedule -->
+    <div class="card">
+      <a href="go:matches" class="card-link">
+        <img src="https://up6.cc/2025/08/17552587863131.jpg" class="card-image">
+        <div class="card-content">
+          <h3 class="card-name">جدول المباريات</h3>
+          <p class="card-desc">مواعيد جميع المباريات القادمة</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <div class="card-channels">
+                <i class="fas fa-calendar-alt"></i>
+                <span>شامل</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    
+    
+    
+    <!-- Videos -->
+    <div class="card">
+      <a href="go:videos" class="card-link">
+        <img src="https://up6.cc/2025/08/175526100477761.jpg" class="card-image">
+        <div class="card-content">
+          <h3 class="card-name">الفيديوهات</h3>
+          <p class="card-desc">أهم الفيديوهات الرياضية الحصرية</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <div class="card-channels">
+                <i class="fas fa-video"></i>
+                <span>حصري</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    
+    <!-- News -->
+    <div class="card">
+      <a href="go:newss" class="card-link">
+        <img src="https://up6.cc/2025/08/175569742382351.jpg" class="card-image">
+        <div class="card-content">
+          <h3 class="card-name">أخبار رياضية</h3>
+          <p class="card-desc">آخر الأخبار والتطورات الرياضية</p>
+          <div class="card-footer">
+            <div class="card-meta">
+              <div class="card-channels">
+                <i class="fas fa-newspaper"></i>
+                <span>محدث</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+
+
+    <!-- أفلام ومسلسلات -->
+<div class="card">
+  <a href="go:movies" class="card-link">
+    <img src="https://up6.cc/2025/08/175526398965971.jpg" class="card-image" alt="أفلام ومسلسلات">
+    <div class="card-content">
+      <h3 class="card-name">الأفلام والمسلسلات</h3>
+      <p class="card-desc">أحدث الإصدارات والعروض التلفزيونية</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <div class="card-channels">
+            <i class="fas fa-film"></i>
+            <span>جديد اليوم</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+  </div>
+</section>
+</div>
+
+<!-- Side Menu -->
+<div class="overlay" id="overlay"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="menu-header">
+    <div class="menu-title">القائمة</div>
+    <button class="close-menu" id="closeMenu">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
+  <div class="menu-items">
+    <a href="go:home" class="menu-item active">
+      <div class="menu-icon">
+        <i class="fas fa-home"></i>
+      </div>
+      <div class="menu-text">الصفحة الرئيسية</div>
+    </a>
+    
+    <a href="go:subscriptions" class="menu-item">
+      <div class="menu-icon">
+        <i class="fas fa-star"></i>
+      </div>
+      <div class="menu-text">اشتراكي</div>
+    </a>
+    
+    <a href="go:favorites" class="menu-item">
+      <div class="menu-icon">
+        <i class="fas fa-heart"></i>
+      </div>
+      <div class="menu-text">المفضلة</div>
+    </a>
+    
+    <a href="go:history" class="menu-item">
+      <div class="menu-icon">
+        <i class="fas fa-history"></i>
+      </div>
+      <div class="menu-text">سجل المشاهدة</div>
+    </a>
+    
+    <a href="go:player" class="menu-item">
+      <div class="menu-icon">
+        <i class="fas fa-download"></i>
+      </div>
+      <div class="menu-text">تحميل المشغل</div>
+    </a>
+    
+    <a href="go:telegram" class="menu-item">
+      <div class="menu-icon">
+        <i class="fab fa-telegram"></i>
+      </div>
+      <div class="menu-text">قناتنا على التليجرام</div>
+    </a>
+    
+    <a href="go:facebook" class="menu-item">
+      <div class="menu-icon">
+        <i class="fab fa-facebook-f"></i>
+      </div>
+      <div class="menu-text">صفحتنا على فيسبوك</div>
+    </a>
+  </div>
+  
+  <div class="menu-footer">
+    Magic Connect &copy; 2025 - جميع الحقوق محفوظة
+  </div>
+</div>
+
+<script>
+  // Side Menu Toggle
+  const menuBtn = document.getElementById('menuBtn');
+  const closeMenu = document.getElementById('closeMenu');
+  const overlay = document.getElementById('overlay');
+  const sideMenu = document.getElementById('sideMenu');
+  const header = document.querySelector('header');
+  const mainContainer = document.querySelector('.main-container');
+
+  menuBtn.addEventListener('click', () => {
+    overlay.classList.add('active');
+    sideMenu.classList.add('active');
+    header.classList.add('header-blur');
+    mainContainer.classList.add('main-blur');
+    document.body.style.overflow = 'hidden';
+  });
+
+  closeMenu.addEventListener('click', () => {
+    overlay.classList.remove('active');
+    sideMenu.classList.remove('active');
+    header.classList.remove('header-blur');
+    mainContainer.classList.remove('main-blur');
+    document.body.style.overflow = '';
+  });
+
+  overlay.addEventListener('click', () => {
+    overlay.classList.remove('active');
+    sideMenu.classList.remove('active');
+    header.classList.remove('header-blur');
+    mainContainer.classList.remove('main-blur');
+    document.body.style.overflow = '';
+  });
+
+  // Refresh Button with Spin Animation
+  const refreshBtn = document.getElementById('refreshBtn');
+  refreshBtn.addEventListener('click', function() {
+    const icon = this.querySelector('i');
+    icon.style.transform = 'rotate(0deg)';
+    icon.style.transition = 'transform 0.5s ease';
+    
+    setTimeout(() => {
+      icon.style.transform = 'rotate(360deg)';
+      setTimeout(() => {
+        location.reload();
+      }, 500);
+    }, 10);
+  });
+
+  // Keyboard Navigation for TV/Remote
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sideMenu.classList.contains('active')) {
+      overlay.classList.remove('active');
+      sideMenu.classList.remove('active');
+      header.classList.remove('header-blur');
+      mainContainer.classList.remove('main-blur');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Initialize Favorites and History
+  if (!localStorage.getItem('favorites')) {
+    localStorage.setItem('favorites', JSON.stringify([]));
+  }
+  if (!localStorage.getItem('watchHistory')) {
+    localStorage.setItem('watchHistory', JSON.stringify([]));
+  }
+
+  // Add Favorite Buttons to Cards
+  document.querySelectorAll('.card').forEach(card => {
+    const favBtn = document.createElement('button');
+    favBtn.innerHTML = '<i class="far fa-heart"></i>';
+    favBtn.className = 'favorite-btn';
+    favBtn.style.position = 'absolute';
+    favBtn.style.top = '10px';
+    favBtn.style.right = '10px';
+    favBtn.style.background = 'rgba(0, 0, 0, 0.7)';
+    favBtn.style.border = 'none';
+    favBtn.style.borderRadius = '50%';
+    favBtn.style.width = '30px';
+    favBtn.style.height = '30px';
+    favBtn.style.color = 'white';
+    favBtn.style.cursor = 'pointer';
+    favBtn.style.zIndex = '1';
+    
+    card.querySelector('.card-link').prepend(favBtn);
+    
+    // Check if already in favorites
+    const cardId = card.querySelector('.card-link').getAttribute('href');
+    const favorites = JSON.parse(localStorage.getItem('favorites'));
+    if (favorites.some(item => item.id === cardId)) {
+      favBtn.innerHTML = '<i class="fas fa-heart" style="color: #ff6b00;"></i>';
+    }
+    
+    // Toggle Favorite
+    favBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const cardId = card.querySelector('.card-link').getAttribute('href');
+      const cardTitle = card.querySelector('.card-name').textContent;
+      const cardImage = card.querySelector('.card-image').src;
+      
+      let favorites = JSON.parse(localStorage.getItem('favorites'));
+      const index = favorites.findIndex(item => item.id === cardId);
+      
+      if (index === -1) {
+        favorites.push({ id: cardId, title: cardTitle, image: cardImage, date: new Date().toISOString() });
+        favBtn.innerHTML = '<i class="fas fa-heart" style="color: #ff6b00;"></i>';
+        showNotification('تمت الإضافة إلى المفضلة');
+      } else {
+        favorites.splice(index, 1);
+        favBtn.innerHTML = '<i class="far fa-heart"></i>';
+        showNotification('تمت الإزالة من المفضلة');
+      }
+      
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    });
+    
+    // Track Watch History
+    card.querySelector('.card-link').addEventListener('click', function(e) {
+      const cardId = this.getAttribute('href');
+      const cardTitle = card.querySelector('.card-name').textContent;
+      const cardImage = card.querySelector('.card-image').src;
+      
+      let history = JSON.parse(localStorage.getItem('watchHistory'));
+      history = history.filter(item => item.id !== cardId);
+      history.unshift({ id: cardId, title: cardTitle, image: cardImage, date: new Date().toISOString() });
+      
+      if (history.length > 50) {
+        history = history.slice(0, 50);
+      }
+      
+      localStorage.setItem('watchHistory', JSON.stringify(history));
+    });
+  });
+
+  // Handle Menu Clicks
+  document.querySelector('.menu-items').addEventListener('click', function(e) {
+    const menuItem = e.target.closest('.menu-item');
+    if (!menuItem) return;
+    
+    if (menuItem.getAttribute('href') === 'go:favorites') {
+      e.preventDefault();
+      showFavorites();
+    } else if (menuItem.getAttribute('href') === 'go:history') {
+      e.preventDefault();
+      showHistory();
+    } else if (menuItem.getAttribute('href') === 'go:subscriptions') {
+      e.preventDefault();
+      showAccountSubscription();
+    }
+  });
+
+  // Show Favorites Modal
+  function showFavorites() {
+    const favorites = JSON.parse(localStorage.getItem('favorites'));
+    const modal = createModal('المفضلة');
+    
+    if (favorites.length === 0) {
+      const emptyMsg = document.createElement('div');
+      emptyMsg.textContent = 'لا توجد عناصر في المفضلة حتى الآن';
+      emptyMsg.style.textAlign = 'center';
+      emptyMsg.style.padding = '20px';
+      emptyMsg.style.color = 'var(--text-secondary)';
+      modal.content.appendChild(emptyMsg);
+    } else {
+      const container = document.createElement('div');
+      container.className = 'grid-cards';
+      container.style.padding = '10px';
+      
+      favorites.forEach(item => {
+        const card = createCard(item);
+        container.appendChild(card);
+      });
+      
+      modal.content.appendChild(container);
+    }
+    
+    document.body.appendChild(modal.element);
+  }
+
+  // Show History Modal
+  function showHistory() {
+    const history = JSON.parse(localStorage.getItem('watchHistory'));
+    const modal = createModal('سجل المشاهدة');
+    
+    if (history.length === 0) {
+      const emptyMsg = document.createElement('div');
+      emptyMsg.textContent = 'لا توجد عناصر في سجل المشاهدة حتى الآن';
+      emptyMsg.style.textAlign = 'center';
+      emptyMsg.style.padding = '20px';
+      emptyMsg.style.color = 'var(--text-secondary)';
+      modal.content.appendChild(emptyMsg);
+    } else {
+      const container = document.createElement('div');
+      container.className = 'grid-cards';
+      container.style.padding = '10px';
+      
+      history.forEach(item => {
+        const card = createCard(item);
+        container.appendChild(card);
+      });
+      
+      modal.content.appendChild(container);
+    }
+    
+    document.body.appendChild(modal.element);
+  }
+
+  // Show Account Subscription Info - Professional Responsive Design
+function showAccountSubscription() {
+    // بيانات الاشتراك
+    const subscriptionData = {
+        accountName: "Magic Connect VIP",
+        subscriptionCode: "YC-VIP-2025-8765",
+        startDate: "15/08/2025",
+        expiryDate: "15/08/2026",
+        status: "نشط",
+        remainingDays: "365 يوم",
+        subscriptionType: "باقة الاشتراك السنوي المميزة"
+    };
+
+    const modal = createModal('معلومات اشتراكي');
+    
+    // إعدادات أساسية للنافذة
+    modal.content.style.padding = '0';
+    modal.content.style.maxHeight = '70vh';
+    modal.content.style.overflowY = 'auto';
+    
+    // تصميم البطاقة الرئيسية
+    const subscriptionCard = document.createElement('div');
+    subscriptionCard.style.background = '#272727';
+    subscriptionCard.style.color = 'white';
+    subscriptionCard.style.width = '100%';
+    subscriptionCard.style.minHeight = '100%';
+    subscriptionCard.style.boxSizing = 'border-box';
+    subscriptionCard.style.position = 'relative';
+    subscriptionCard.style.overflow = 'hidden';
+    
+    // تأثيرات زخرفية
+    const addDecoration = (top, right, size, opacity) => {
+        const deco = document.createElement('div');
+        deco.style.position = 'absolute';
+        deco.style.top = top;
+        deco.style.right = right;
+        deco.style.width = size;
+        deco.style.height = size;
+        deco.style.borderRadius = '50%';
+        deco.style.background = `rgba(255, 255, 255, ${opacity})`;
+        subscriptionCard.appendChild(deco);
+    };
+    
+    addDecoration('-50px', '-50px', '200px', '0.1');
+    addDecoration('80%', '20%', '100px', '0.08');
+    addDecoration('30%', '-30px', '150px', '0.05');
+    
+    // محتوى البطاقة
+    const cardContent = document.createElement('div');
+    cardContent.style.position = 'relative';
+    cardContent.style.zIndex = '2';
+    cardContent.style.padding = '20px';
+    cardContent.style.maxWidth = '100%';
+    cardContent.style.boxSizing = 'border-box';
+    
+    // العنوان الرئيسي
+    const cardTitle = document.createElement('h2');
+    cardTitle.textContent = subscriptionData.accountName;
+    cardTitle.style.margin = '0 0 25px 0';
+    cardTitle.style.fontSize = 'clamp(1.5rem, 4vw, 2rem)';
+    cardTitle.style.fontWeight = 'bold';
+    cardTitle.style.textAlign = 'center';
+    cardTitle.style.textShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
+    
+    // حاوية المعلومات
+    const infoContainer = document.createElement('div');
+    infoContainer.style.display = 'grid';
+    infoContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(250px, 1fr))';
+    infoContainer.style.gap = '15px';
+    infoContainer.style.marginBottom = '25px';
+    
+    // دالة إنشاء عنصر معلومات
+    const createInfoBox = (label, value, isHighlight = false) => {
+        const box = document.createElement('div');
+        box.style.background = 'rgba(0, 0, 0, 0.25)';
+        box.style.borderRadius = '8px';
+        box.style.padding = '15px';
+        box.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+        
+        const labelEl = document.createElement('div');
+        labelEl.textContent = label;
+        labelEl.style.fontSize = '0.95rem';
+        labelEl.style.color = 'rgba(255, 255, 255, 0.85)';
+        labelEl.style.marginBottom = '8px';
+        
+        const valueEl = document.createElement('div');
+        valueEl.textContent = value;
+        valueEl.style.fontSize = isHighlight ? '1.25rem' : '1.1rem';
+        valueEl.style.fontWeight = isHighlight ? 'bold' : '600';
+        valueEl.style.color = 'white';
+        
+        box.appendChild(labelEl);
+        box.appendChild(valueEl);
+        return box;
+    };
+    
+    // إضافة عناصر المعلومات
+    infoContainer.appendChild(createInfoBox('نوع الاشتراك', subscriptionData.subscriptionType));
+    infoContainer.appendChild(createInfoBox('حالة الاشتراك', subscriptionData.status, true));
+    infoContainer.appendChild(createInfoBox('تاريخ الاشتراك', subscriptionData.startDate));
+    infoContainer.appendChild(createInfoBox('تاريخ الانتهاء', subscriptionData.expiryDate));
+    infoContainer.appendChild(createInfoBox('المدة المتبقية', subscriptionData.remainingDays, true));
+    
+    // قسم كود التفعيل
+    const codeSection = document.createElement('div');
+    codeSection.style.background = 'rgba(0, 0, 0, 0.3)';
+    codeSection.style.borderRadius = '8px';
+    codeSection.style.padding = '20px';
+    codeSection.style.textAlign = 'center';
+    
+    const codeLabel = document.createElement('div');
+    codeLabel.textContent = 'كود التفعيل الخاص بك';
+    codeLabel.style.fontSize = '1.1rem';
+    codeLabel.style.marginBottom = '15px';
+    codeLabel.style.color = 'rgba(255, 255, 255, 0.85)';
+    
+    const codeValue = document.createElement('div');
+    codeValue.textContent = subscriptionData.subscriptionCode;
+    codeValue.style.fontSize = 'clamp(1.3rem, 5vw, 1.8rem)';
+    codeValue.style.fontWeight = 'bold';
+    codeValue.style.letterSpacing = '2px';
+    codeValue.style.color = 'white';
+    codeValue.style.padding = '15px';
+    codeValue.style.background = 'rgba(0, 0, 0, 0.4)';
+    codeValue.style.borderRadius = '6px';
+    codeValue.style.display = 'inline-block';
+    codeValue.style.width = '100%';
+    codeValue.style.boxSizing = 'border-box';
+    codeValue.style.overflowX = 'auto';
+    codeValue.style.whiteSpace = 'nowrap';
+    
+    codeSection.appendChild(codeLabel);
+    codeSection.appendChild(codeValue);
+    
+    // تجميع العناصر
+    cardContent.appendChild(cardTitle);
+    cardContent.appendChild(infoContainer);
+    cardContent.appendChild(codeSection);
+    subscriptionCard.appendChild(cardContent);
+    modal.content.appendChild(subscriptionCard);
+    
+    document.body.appendChild(modal.element);
+}
+
+  // Create Modal
+  function createModal(title) {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0,0,0,0.8)';
+    overlay.style.zIndex = '2000';
+    overlay.style.display = 'flex';
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal-container';
+    modal.style.backgroundColor = 'var(--card-bg)';
+    modal.style.borderRadius = '10px';
+    modal.style.width = '90%';
+    modal.style.maxWidth = '1000px';
+    modal.style.maxHeight = '80vh';
+    modal.style.overflow = 'hidden';
+    modal.style.boxShadow = '0 5px 20px rgba(0,0,0,0.5)';
+    
+    const header = document.createElement('div');
+    header.className = 'modal-header';
+    header.style.display = 'flex';
+    header.style.justifyContent = 'space-between';
+    header.style.alignItems = 'center';
+    header.style.padding = '15px 20px';
+    header.style.backgroundColor = 'var(--primary)';
+    
+    const headerTitle = document.createElement('div');
+    headerTitle.className = 'modal-title';
+    headerTitle.textContent = title;
+    headerTitle.style.fontWeight = 'bold';
+    headerTitle.style.fontSize = '1.2rem';
+    headerTitle.style.color = 'white';
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-close';
+    closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+    closeBtn.style.background = 'none';
+    closeBtn.style.border = 'none';
+    closeBtn.style.color = 'white';
+    closeBtn.style.fontSize = '1.2rem';
+    closeBtn.style.cursor = 'pointer';
+    
+    closeBtn.addEventListener('click', () => {
+      overlay.remove();
+    });
+    
+    header.appendChild(headerTitle);
+    header.appendChild(closeBtn);
+    
+    const content = document.createElement('div');
+    content.className = 'modal-content';
+    content.style.overflowY = 'auto';
+    content.style.maxHeight = 'calc(80vh - 60px)';
+    
+    modal.appendChild(header);
+    modal.appendChild(content);
+    overlay.appendChild(modal);
+    
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.remove();
+      }
+    });
+    
+    return {
+      element: overlay,
+      content: content
+    };
+  }
+
+  // Create Card for Modal
+  function createCard(item) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.position = 'relative';
+    
+    const link = document.createElement('a');
+    link.href = item.id;
+    link.className = 'card-link';
+    
+    const img = document.createElement('img');
+    img.src = item.image;
+    img.className = 'card-image';
+    img.style.height = '180px';
+    img.style.objectFit = 'cover';
+    
+    const content = document.createElement('div');
+    content.className = 'card-content';
+    
+    const name = document.createElement('h3');
+    name.className = 'card-name';
+    name.textContent = item.title;
+    
+    const footer = document.createElement('div');
+    footer.className = 'card-footer';
+    
+    const date = document.createElement('div');
+    date.style.fontSize = '0.8rem';
+    date.style.color = 'var(--text-secondary)';
+    date.textContent = new Date(item.date).toLocaleString();
+    
+    content.appendChild(name);
+    content.appendChild(date);
+    
+    link.appendChild(img);
+    link.appendChild(content);
+    
+    card.appendChild(link);
+    
+    return card;
+  }
+
+  // Show Notification
+  function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.style.position = 'fixed';
+    notification.style.bottom = '20px';
+    notification.style.right = '20px';
+    notification.style.backgroundColor = 'var(--primary)';
+    notification.style.color = 'white';
+    notification.style.padding = '10px 20px';
+    notification.style.borderRadius = '5px';
+    notification.style.zIndex = '10000';
+    notification.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)';
+    notification.style.animation = 'fadeIn 0.3s ease-in-out';
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.animation = 'fadeOut 0.3s ease-in-out';
+      setTimeout(() => {
+        notification.remove();
+      }, 300);
+    }, 3000);
+  }
+
+  // Add Animations
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(10px); }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Enhanced Menu Items Interaction
+  document.querySelectorAll('.menu-item').forEach(item => {
+    // Add hover effect
+    item.addEventListener('mouseenter', function() {
+      this.style.transform = 'translateX(-5px)';
+    });
+    
+    item.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateX(0)';
+    });
+    
+    // Add click effect
+    item.addEventListener('mousedown', function() {
+      this.style.transform = 'translateX(-5px) scale(0.98)';
+    });
+    
+    item.addEventListener('mouseup', function() {
+      this.style.transform = 'translateX(-5px) scale(1)';
+    });
+    
+    // Add focus effect for keyboard navigation
+    item.addEventListener('focus', function() {
+      this.style.boxShadow = '0 0 0 3px rgba(0, 71, 171, 0.5)';
+    });
+    
+    item.addEventListener('blur', function() {
+      this.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+    });
+  });
+
+  // Improve menu opening animation
+  sideMenu.style.transition = 'left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
+
+  // تحسين تأثير الضغط على الأزرار
+  document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('mousedown', function() {
+      this.style.borderColor = '#0066cc';
+      this.style.transform = 'translateX(-5px) scale(0.98)';
+    });
+    
+    item.addEventListener('mouseup', function() {
+      this.style.borderColor = 'rgba(120, 120, 120, 0.5)';
+      this.style.transform = 'translateX(-5px) scale(1)';
+    });
+    
+    item.addEventListener('mouseleave', function() {
+      this.style.borderColor = 'rgba(120, 120, 120, 0.3)';
+    });
+  });
+</script>
+</body>
+</html>
