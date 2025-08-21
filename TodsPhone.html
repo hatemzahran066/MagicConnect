@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Yalla Connect - الباقات</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+
+    :root {
+
+      --primary: #444;
+
+      --primary-light: #444;
+
+      --dark: #0f0f0f;
+
+      --card-bg: #272727;
+
+      --light: #ffffff;
+
+      --accent: #ff6b00;
+
+      --success: #00c853;
+
+      --text-primary: #e0e0e0;
+
+      --text-secondary: #b0b0b0;
+
+      --section-bg: #1a1a1a;
+
+      --focus-color: rgba(0, 71, 171, 0.5);
+
+    }
+
+    
+
+    * {
+
+      margin: 0;
+
+      padding: 0;
+
+      box-sizing: border-box;
+
+    }
+
+    
+
+    body {
+
+      font-family: 'Cairo', sans-serif;
+
+      background-color: var(--dark);
+
+      color: var(--text-primary);
+
+      min-height: 100vh;
+
+      overflow-x: hidden;
+
+      line-height: 1.6;
+
+    }
+
+    
+
+    /* Header */
+
+    header {
+
+      background: linear-gradient(to left, #333, #333);
+      padding: 10px 16px;
+
+      display: grid;
+
+      grid-template-columns: 1fr auto 1fr;
+
+      align-items: center;
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 1000;
+
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+
+      font-family: 'Montserrat', sans-serif;
+
+      margin-bottom:-20px;
+
+    }
+
+    
+
+    .header-left {
+
+      justify-self: start;
+
+    }
+
+    
+
+    .header-center {
+
+      justify-self: center;
+
+    }
+
+    
+
+    .header-right {
+
+      justify-self: end;
+
+    }
+
+    
+
+    .logo-text {
+
+      font-weight: 800;
+
+      font-size: 1.4rem;
+
+      color: var(--light);
+
+    }
+
+    
+
+    .header-btn {
+
+      background: none;
+
+      border: none;
+
+      color: var(--light);
+
+      font-size: 1.2rem;
+
+      cursor: pointer;
+
+      transition: all 0.3s ease;
+
+      width: 36px;
+
+      height: 36px;
+
+      border-radius: 50%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background-color: rgba(255, 255, 255, 0.15);
+
+    }
+
+    
+
+    .header-btn:hover {
+
+      background-color: rgba(255, 255, 255, 0.15);
+
+    }
+
+    
+
+    /* Main Content */
+
+    .main-container {
+
+      padding: 0;
+
+      max-width: 1400px;
+
+      margin: 0 auto;
+
+    }
+
+    
+
+    /* Section Styles */
+
+    .section {
+
+      padding: 1.5rem;
+
+      margin-bottom: 0.5rem;
+
+    }
+
+    
+
+    .section-header {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      margin-bottom: 1.2rem;
+
+    }
+
+    
+
+    .section-title {
+
+      font-size: 1.5rem;
+
+      font-weight: 700;
+
+      color: var(--light);
+
+    }
+
+    
+
+    /* تعديلات زر عرض الكل - نسخة محترفة */
+
+    .view-all {
+
+      color: var(--light);
+
+      font-weight: 700;
+
+      text-decoration: none;
+
+      font-size: 0.9rem;
+
+      transition: all 0.3s;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 0.5rem;
+
+      
+
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+
+      border-radius: 25px;
+
+      box-shadow: 0 2px 8px rgba(0, 71, 171, 0.3);
+
+      position: relative;
+
+      overflow: hidden;
+
+      border: none;
+
+      cursor: pointer;
+
+      font-family: 'Cairo', sans-serif;
+
+    }
+
+
+
+    .view-all::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      left: -100%;
+
+      width: 100%;
+
+      height: 100%;
+
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+
+      transition: 0.5s;
+
+    }
+
+
+
+    .view-all:hover {
+
+      transform: translateY(-2px);
+
+      box-shadow: 0 4px 12px rgba(0, 71, 171, 0.4);
+
+    }
+
+
+
+    .view-all:hover::before {
+
+      left: 100%;
+
+    }
+
+
+
+    .view-all i {
+
+      font-size: 0.7rem;
+
+      transition: transform 0.3s;
+
+    }
+
+
+
+    .view-all:hover i {
+
+      transform: translateX(-3px);
+
+    }
+
+    
+
+    /* Card Styles */
+
+    .card {
+
+      background-color: #333;
+      border-radius: 10px;
+
+      overflow: hidden;
+
+      position: relative;
+
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+
+      border: 1px solid rgba(255, 255, 255, 0.05);
+
+      transition: all 0.3s ease;
+
+      outline: none;
+
+    }
+
+    
+
+    .card:hover {
+
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+
+    }
+
+    
+
+    .card-link {
+
+      text-decoration: none;
+
+      color: inherit;
+
+      display: block;
+
+      height: 100%;
+
+      outline: none;
+
+    }
+
+    
+
+    .card-image {
+
+      width: 100%;
+
+      height: 180px;
+
+      object-fit: cover;
+
+      border:1px solid #555;
+    }
+
+    
+
+    .card-content {
+
+      padding: 1rem;
+
+    }
+
+    
+
+    .card-name {
+
+      font-size: 1.2rem;
+
+      font-weight: 700;
+
+      color: var(--light);
+
+      margin-bottom: 0.5rem;
+
+    }
+
+    
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.8rem;
+    }
+    
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    
+    .card-channels {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.8rem;
+    }
+    
+    .card-channels i {
+      color: #ddd;
+      font-size: 0.9rem;
+    }
+    
+    .card-badge {
+      background-color: #666;
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    
+
+    /* Grid Cards - Modified for equal height cards */
+
+    .grid-cards {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+
+      gap: 1.5rem;
+
+    }
+
+    
+
+    /* تأثير دوران أيقونة التحديث */
+
+    @keyframes spin {
+
+      0% { transform: rotate(0deg); }
+
+      100% { transform: rotate(360deg); }
+
+    }
+
+
+
+    .refresh-spin {
+
+      animation: spin 0.5s linear 1;
+
+      display: inline-block;
+
+    }
+
+
+
+    /* أضف هذا الكود في قسم الـ style */
+
+    .section {
+
+      position: relative;
+
+      padding-top: 2rem;
+
+      margin-bottom: 2rem;
+
+    }
+
+
+
+    .section::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      right: 0;
+
+      width: 100%;
+
+      height: 1px;
+
+      background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+
+    }
+
+
+
+    .section::after {
+
+      content: '';
+
+      position: absolute;
+
+      top: -5px;
+
+      right: 50%;
+
+      transform: translateX(50%);
+
+      width: 100px;
+
+      height: 10px;
+
+      background: radial-gradient(ellipse at center, var(--primary-light) 0%, transparent 70%);
+
+    }
+
+
+
+    /* تحسينات إضافية للعناوين */
+
+    .section-header .section-title {
+
+      position: relative;
+
+      padding-bottom: 8px;
+
+      margin-bottom: 1rem;
+
+    }
+
+
+
+    .section-header .section-title::after {
+
+      content: '';
+
+      position: absolute;
+
+      bottom: 0;
+
+      right: 0;
+
+      width: 50px;
+
+      height: 3px;
+
+      background-color: var(--primary-light);
+
+      border-radius: 3px;
+
+      box-shadow: 0 2px 5px rgba(0, 118, 255, 0.3);
+
+    }
+
+
+
+    /* Focus Styles for TV/Remote Navigation */
+
+    a:focus, button:focus, .card:focus {
+
+      outline: none;
+
+    }
+
+
+
+    /* Card focus styles */
+
+    .card.focused {
+
+      box-shadow: 0 0 0 3px var(--focus-color);
+
+      z-index: 10;
+
+    }
+
+
+
+    .card:not(.focused) {
+
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+
+      transform: none;
+
+    }
+
+
+
+    /* إضافة هذه الأنماط إلى قسم الـ CSS */
+
+    .card-link {
+
+      cursor: pointer;
+
+      transition: transform 0.2s ease;
+
+    }
+
+
+
+    .card-link:hover {
+
+      transform: scale(1.02);
+
+    }
+
+
+
+    .card-link:active {
+
+      transform: scale(0.98);
+
+    }
+
+
+
+    /* زيادة حجم العناصر القابلة للنقر */
+
+    .menu-item, .card {
+
+      min-height: 60px;
+
+    }
+
+
+
+    /* تحسين تأثيرات الـ focus */
+
+    .card.focused {
+
+      box-shadow: 0 0 0 4px var(--focus-color);
+
+      z-index: 10;
+
+      transition: all 0.3s ease;
+
+    }
+
+
+
+    /* Animations */
+
+    @keyframes fadeIn {
+
+      from { opacity: 0; transform: translateY(10px); }
+
+      to { opacity: 1; transform: translateY(0); }
+
+    }
+
+    @keyframes fadeOut {
+
+      from { opacity: 1; transform: translateY(0); }
+
+      to { opacity: 0; transform: translateY(10px); }
+
+    }
+
+    
+
+    .all-packages-section {
+
+      padding: 1rem;
+
+    }
+
+    
+
+    .packages-grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+
+      gap: 1.5rem;
+
+      margin-top: 1.5rem;
+
+    }
+
+
+
+    /* Responsive */
+
+    @media (max-width: 1200px) {
+
+      .packages-grid {
+
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
+      }
+
+    }
+
+
+
+    @media (max-width: 768px) {
+
+      .packages-grid {
+
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+
+        gap: 1rem;
+
+      }
+
+      
+
+      .card-image {
+
+        height: 160px;
+
+      }
+
+    }
+
+
+
+    @media (max-width: 576px) {
+
+      .packages-grid {
+
+        grid-template-columns: 1fr;
+
+      }
+
+      
+
+      .section-title {
+
+        font-size: 1.3rem;
+
+      }
+
+      
+
+      .logo-text {
+
+        font-size: 1.2rem;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+
+
+<!-- Header -->
+
+<header>
+
+  <div class="header-left">
+
+    <button class="header-btn" id="refreshBtn">
+
+      <i class="fas fa-sync-alt"></i>
+
+    </button>
+
+  </div>
+
+  <div class="header-center">
+
+    <div class="logo-text">Magic Connect</div>
+
+  </div>
+
+  <div class="header-right">
+
+    <button class="header-btn" id="backBtn">
+
+      <i class="fas fa-arrow-left"></i>
+
+    </button>
+
+  </div>
+
+</header>
+
+
+
+<!-- Main Content -->
+
+<div class="main-container">
+
+  <!-- All Packages Section -->
+
+  <section class="all-packages-section">
+
+
+
+    <div class="packages-grid">
+
+      
+
+      
+
+      
+
+      <div class="card" tabindex="0">
+        <a href="go:tods1p" class="card-link">
+          <img src="https://up6.cc/2025/08/175524999539551.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة beIN TOD ( السيرفر الأول )</h3>
+            <p class="card-desc">أهم القنوات الرياضية العالمية</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>29 قناة</span>
+                </div>
+              </div>
+              <div class="card-badge">الأكثر مشاهدة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="card" tabindex="0">
+        <a href="go:tods2p" class="card-link">
+          <img src="https://up6.cc/2025/08/175524999539551.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة beIN TOD ( السيرفر الثاني )</h3>
+            <p class="card-desc">أهم القنوات الرياضية العالمية</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>29 قناة</span>
+                </div>
+              </div>
+              <div class="card-badge">الأكثر مشاهدة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+ 
+
+
+<script>
+
+  // حل مشكلة زر التحديث - النسخة النهائية
+
+  document.addEventListener('DOMContentLoaded', function() {
+
+    const refreshBtn = document.getElementById('refreshBtn');
+
+    
+
+    if (refreshBtn) {
+
+      refreshBtn.addEventListener('click', function(e) {
+
+        e.preventDefault();
+
+        e.stopPropagation();
+
+        
+
+        console.log('Refresh button clicked'); // للتأكد من أن الحدث يعمل
+
+        
+
+        const icon = this.querySelector('i.fa-sync-alt');
+
+        if (icon) {
+
+          // إضافة كلاس الحركة الدورانية
+
+          icon.classList.add('refresh-spin');
+
+          
+
+          // إزالة الكلاس بعد انتهاء الحركة
+
+          setTimeout(() => {
+
+            icon.classList.remove('refresh-spin');
+
+          }, 500);
+
+          
+
+          // إعادة تحميل الصفحة بعد التأكد من انتهاء الدوران
+
+          setTimeout(() => {
+
+            window.location.href = window.location.href; // طريقة آمنة لإعادة التحميل
+
+          }, 500);
+
+        } else {
+
+          console.error('Refresh icon not found!');
+
+          location.reload(); // حل احتياطي إذا لم توجد الأيقونة
+
+        }
+
+      });
+
+    } else {
+
+      console.error('Refresh button not found in DOM!');
+
+    }
+
+
+
+    // باقي الكود كما هو...
+
+    const menuBtn = document.getElementById('menuBtn');
+
+    const closeMenu = document.getElementById('closeMenu');
+
+    const overlay = document.getElementById('overlay');
+
+    const sideMenu = document.getElementById('sideMenu');
+
+    const header = document.querySelector('header');
+
+    const mainContainer = document.querySelector('.main-container');
+
+
+
+    if (menuBtn && closeMenu && overlay && sideMenu) {
+
+      menuBtn.addEventListener('click', () => {
+
+        overlay.classList.add('active');
+
+        sideMenu.classList.add('active');
+
+        header.classList.add('header-blur');
+
+        mainContainer.classList.add('main-blur');
+
+        document.body.style.overflow = 'hidden';
+
+      });
+
+
+
+      closeMenu.addEventListener('click', () => {
+
+        overlay.classList.remove('active');
+
+        sideMenu.classList.remove('active');
+
+        header.classList.remove('header-blur');
+
+        mainContainer.classList.remove('main-blur');
+
+        document.body.style.overflow = '';
+
+      });
+
+
+
+      overlay.addEventListener('click', () => {
+
+        overlay.classList.remove('active');
+
+        sideMenu.classList.remove('active');
+
+        header.classList.remove('header-blur');
+
+        mainContainer.classList.remove('main-blur');
+
+        document.body.style.overflow = '';
+
+      });
+
+    }
+
+
+
+    // Back Button Functionality
+
+    const backBtn = document.getElementById('backBtn');
+
+    if (backBtn) {
+
+      backBtn.addEventListener('click', function() {
+
+        window.history.back();
+
+      });
+
+    }
+
+
+
+    // Keyboard Navigation for TV/Remote
+
+    document.addEventListener('keydown', (e) => {
+
+      // Handle escape key for closing menu
+
+      if (e.key === 'Escape' && sideMenu && sideMenu.classList.contains('active')) {
+
+        overlay.classList.remove('active');
+
+        sideMenu.classList.remove('active');
+
+        header.classList.remove('header-blur');
+
+        mainContainer.classList.remove('main-blur');
+
+        document.body.style.overflow = '';
+
+        menuBtn.focus();
+
+        return;
+
+      }
+
+
+
+      // Handle arrow keys for navigation
+
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+
+        e.preventDefault();
+
+        
+
+        // Check if menu is open
+
+        if (sideMenu && sideMenu.classList.contains('active')) {
+
+          handleMenuNavigation(e);
+
+        } else {
+
+          handleCardNavigation(e);
+
+        }
+
+      }
+
+      
+
+      // زر العودة للخلف (Back)
+
+      if (e.key === 'Backspace' || e.key === 'Back') {
+
+        if (sideMenu && sideMenu.classList.contains('active')) {
+
+          closeMenu.click();
+
+          e.preventDefault();
+
+        }
+
+      }
+
+      
+
+      // زر القائمة (Menu)
+
+      if (e.key === 'ContextMenu') {
+
+        menuBtn.click();
+
+        e.preventDefault();
+
+      }
+
+    });
+
+
+
+    function handleCardNavigation(e) {
+
+      const cards = Array.from(document.querySelectorAll('.card'));
+
+      let focusedCard = document.querySelector('.card.focused');
+
+      
+
+      if (!focusedCard && cards.length > 0) {
+
+        focusedCard = cards[0];
+
+      }
+
+      
+
+      const currentIndex = cards.indexOf(focusedCard);
+
+      let nextIndex = currentIndex;
+
+      const cardsPerRow = Math.floor(window.innerWidth / 300);
+
+      
+
+      if (e.key === 'ArrowRight') {
+
+        nextIndex = currentIndex - 1;
+
+      } else if (e.key === 'ArrowLeft') {
+
+        nextIndex = currentIndex + 1;
+
+      } else if (e.key === 'ArrowUp') {
+
+        nextIndex = currentIndex - cardsPerRow;
+
+      } else if (e.key === 'ArrowDown') {
+
+        nextIndex = currentIndex + cardsPerRow;
+
+      } else if (e.key === 'Enter' || e.key === 'OK') {
+
+        if (focusedCard) {
+
+          const link = focusedCard.querySelector('.card-link');
+
+          if (link) link.click();
+
+        }
+
+        return;
+
+      }
+
+      
+
+      nextIndex = Math.max(0, Math.min(nextIndex, cards.length - 1));
+
+      
+
+      if (nextIndex !== currentIndex) {
+
+        cards.forEach(card => card.classList.remove('focused'));
+
+        cards[nextIndex].classList.add('focused');
+
+        cards[nextIndex].focus();
+
+        
+
+        cards[nextIndex].scrollIntoView({
+
+          behavior: 'smooth',
+
+          block: 'center',
+
+          inline: 'center'
+
+        });
+
+      }
+
+    }
+
+
+
+    
+
+    // تحسين تحميل الصور
+
+    document.querySelectorAll('.card-image').forEach(img => {
+
+      img.loading = 'lazy';
+
+      img.onerror = function() {
+
+        this.src = 'placeholder-image.jpg';
+
+      };
+
+    });
+
+  });
+
+  
+
+  // Back Button Functionality - التوجيه لصفحة معينة
+
+const backBtn = document.getElementById('backBtn');
+
+if (backBtn) {
+
+  backBtn.addEventListener('click', function() {
+
+    // استبدل 'page.html' بالصفحة التي تريد التوجيه إليها
+
+    window.location.href = 'go:sports'; 
+
+    // أو يمكنك استخدام:
+
+    // window.location.assign('index.html');
+
+  });
+
+}
+
+</script>
+
+</body>
+
+</html>

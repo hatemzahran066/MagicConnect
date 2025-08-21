@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magic Connect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #444;
+      --primary-light: #444;
+      --dark: #0f0f0f;
+      --card-bg: #272727;
+      --light: #ffffff;
+      --accent: #ff6b00;
+      --success: #00c853;
+      --text-primary: #e0e0e0;
+      --text-secondary: #b0b0b0;
+      --section-bg: #1a1a1a;
+      --focus-color: rgba(0, 71, 171, 0.5);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: var(--dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+      /* منع التمرير التلقائي مؤقتاً */
+      overflow: hidden;
+    }
+    
+    body.loaded {
+      overflow: auto;
+    }
+    
+    /* Header */
+    header {
+      background: linear-gradient(to left, #333, #333);
+      padding: 10px 16px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .header-left {
+      justify-self: start;
+    }
+    
+    .header-center {
+      justify-self: center;
+    }
+    
+    .header-right {
+      justify-self: end;
+    }
+    
+    .logo-text {
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: var(--light);
+    }
+    
+    .header-btn {
+      background: none;
+      border: none;
+      color: var(--light);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .header-btn:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    /* Main Content */
+    .main-container {
+      padding: 0;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    /* Section Styles */
+    .section {
+      padding: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+    }
+    
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--light);
+    }
+    
+    /* تعديلات زر عرض الكل - نسخة محترفة */
+    .view-all {
+      color: var(--light);
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: 25px;
+      
+      position: relative;
+      overflow: hidden;
+      border: none;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .view-all::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .view-all:hover {
+      transform: translateY(-2px);
+      
+    }
+
+    .view-all:hover::before {
+      left: 100%;
+    }
+
+    .view-all i {
+      font-size: 1rem;
+      transition: transform 0.3s;
+    }
+
+    .view-all:hover i {
+      transform: translateX(-3px);
+    }
+    
+    /* Card Styles */
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+      outline: none;
+    }
+    
+    .card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      height: 100%;
+      outline: none;
+    }
+    
+    .card-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    
+    .card-content {
+      padding: 1rem;
+    }
+    
+    .card-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--light);
+      margin-bottom: 0.5rem;
+    }
+    
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.8rem;
+    }
+    
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    
+    .card-channels {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.8rem;
+    }
+    
+    .card-channels i {
+      color: #ddd;
+      font-size: 0.9rem;
+    }
+    
+    .card-badge {
+      background-color: #666;
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    
+    /* Grid Cards - Modified for equal height cards */
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    /* Side Menu */
+    .overlay {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: -320px;
+      width: 300px;
+      max-width: 85%;
+      height: 100%;
+      background-color: #1a1a1a;
+      z-index: 1000;
+      transition: left 0.3s ease;
+      box-shadow: 3px 0 15px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .side-menu.active {
+      left: 0;
+    }
+
+    /* تأثير الضبابية للهيدر والصفحة */
+    .header-blur {
+      filter: blur(4px);
+      opacity: 0.8;
+      transition: all 0.3s ease;
+    }
+
+    .main-blur {
+      filter: blur(4px);
+      transition: all 0.3s ease;
+    }
+    
+    .menu-header {
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--primary);
+    }
+    
+    .menu-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--light);
+    }
+    
+    .close-menu {
+      background: none;
+      border: none;
+      color: var(--light);
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    
+    .close-menu:hover {
+      transform: rotate(90deg);
+    }
+    
+    .menu-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.1rem 0;
+    }
+    
+    /* Add this style for category titles */
+    .section-header .section-title {
+      position: relative;
+      padding-bottom: 8px;
+    }
+
+    .section-header .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 50px;
+      height: 3px;
+      background-color: #999;
+      border-radius: 3px;
+    }
+
+    /* تأثير دوران أيقونة التحديث */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .refresh-spin {
+      animation: spin 0.5s linear 1;
+    }
+
+    
+
+    /* Favorites and History Styles */
+    .favorite-btn {
+      transition: all 0.3s ease;
+    }
+
+    .favorite-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 2000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-container {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      width: 90%;
+      max-width: 1000px;
+      max-height: 80vh;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: var(--primary);
+    }
+
+    .modal-title {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: white;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .modal-content {
+      overflow-y: auto;
+      max-height: calc(80vh - 60px);
+      padding: 15px;
+    }
+
+    .menu-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1rem;
+  margin: 0.7rem 1rem;
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text-primary);
+  background: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  border-left: 5px solid #555; /* حدود يسارية زرقاء مع شفافية */
+  
+}
+
+.menu-item:hover {
+  border-left: 5px solid #999; /* حدود يسارية زرقاء مع شفافية */
+}
+
+.menu-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+  font-size: 1.2rem;
+  color: var(--light);
+  transition: all 0.3s ease;
+  
+}
+
+.menu-item:hover .menu-icon {
+  transform: scale(1.1);
+}
+
+.menu-text {
+  flex: 1;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.menu-item:hover .menu-text {
+  color: var(--light);
+}
+
+/* Add ripple effect */
+.menu-item::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.menu-item:focus:not(:active)::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+}
+
+/* Menu Header Enhancement */
+.menu-header {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #333;
+  
+}
+
+.menu-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--light);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.close-menu {
+  background: #555;
+  border: none;
+  color: var(--light);
+  font-size: 1.3rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.close-menu:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* Menu Footer Enhancement */
+.menu-footer {
+  padding: 1rem;
+  border-top: 1px solid #444;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+
+    /* New Styles for Unified Grid Layout */
+    .all-packages-section {
+      padding: 1rem;
+    }
+
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .packages-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .packages-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+      
+      .card-image {
+        height: 160px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .packages-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .section-title {
+        font-size: 1.3rem;
+      }
+      
+      .logo-text {
+        font-size: 1.2rem;
+      }
+    }
+
+    /* Focus Styles for TV/Remote Navigation */
+    a:focus, button:focus, .card:focus {
+      outline: none;
+    }
+
+    /* Card focus styles */
+    .card.focused {
+      box-shadow: 0 0 0 4px #666;
+      z-index: 10;
+    }
+
+    .card:not(.focused) {
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      transform: none;
+    }
+
+    /* Menu item focus styles */
+    .menu-item.focused {
+      
+      box-shadow: 0 0 0 3px var(--focus-color);
+      border-left: 5px solid #999;
+    }
+
+    /* Header buttons focus */
+    .header-btn:focus {
+      box-shadow: 0 0 0 3px var(--focus-color);
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Refresh button focus */
+    .view-all:focus {
+      box-shadow: 0 0 0 3px #666;
+    }
+    
+    /* إضافة هذه الأنماط إلى قسم الـ CSS */
+.card-link {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.card-link:hover {
+  transform: scale(1.02);
+}
+
+.card-link:active {
+  transform: scale(0.98);
+}
+
+/* زيادة حجم العناصر القابلة للنقر */
+.menu-item, .card {
+  min-height: 60px;
+}
+
+/* تحسين تأثيرات الـ focus */
+.card.focused {
+  box-shadow: 0 0 0 4px #666;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.menu-item:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px #666666 !important;
+}
+
+.menu-item.focused {
+  box-shadow: 0 0 0 3px #666666 !important;
+  border-left: 5px solid #666666 !important;
+}
+  </style>
+  
+  <style>
+/* إزالة الحواف الزرقاء من أزرار القائمة الجانبية */
+.menu-item:focus {
+    outline: #999 !important;
+    box-shadow: none !important;
+}
+
+/* إضافة تأثير مخصص بدلاً من التأثير الافتراضي */
+.menu-item:focus {
+    background: #444 !important;
+    border-left: 5px solid #999 !important;
+}
+
+/* التأكد من إزالة التأثير من العناصر الأخرى */
+.menu-item:focus::after {
+    display: none !important;
+}
+
+.header-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #999 !important;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="header-left">
+    <button class="header-btn" id="refreshBtn">
+      <i class="fas fa-sync-alt"></i>
+    </button>
+  </div>
+  <div class="header-center">
+    <div class="logo-text">Magic Connect</div>
+  </div>
+  <div class="header-right">
+    <button class="header-btn" id="backBtn">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="main-container">
+  <!-- All Packages Section -->
+  <section class="all-packages-section">
+    <div class="section-header">
+      <h2 class="section-title">جميع الباقات</h2>
+      <button class="view-all" id="refreshAllBtn">
+        تحديث القائمة
+        <i class="fas fa-sync-alt"></i>
+      </button>
+    </div>
+    
+    <div class="packages-grid">
+      <!-- Sport Package 1 -->
+  <div class="card" tabindex="0">
+        <a href="go:tods1t" class="card-link">
+          <img src="https://up6.cc/2025/08/175524999539551.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة beIN TOD ( السيرفر الأول )</h3>
+            <p class="card-desc">أهم القنوات الرياضية العالمية</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>29 قناة</span>
+                </div>
+              </div>
+              <div class="card-badge">الأكثر مشاهدة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="card" tabindex="0">
+        <a href="go:tods2t" class="card-link">
+          <img src="https://up6.cc/2025/08/175524999539551.jpg" class="card-image">
+          <div class="card-content">
+            <h3 class="card-name">باقة beIN TOD ( السيرفر الثاني )</h3>
+            <p class="card-desc">أهم القنوات الرياضية العالمية</p>
+            <div class="card-footer">
+              <div class="card-meta">
+                <div class="card-channels">
+                  <i class="fas fa-satellite-dish"></i>
+                  <span>29 قناة</span>
+                </div>
+              </div>
+              <div class="card-badge">الأكثر مشاهدة</div>
+            </div>
+          </div>
+        </a>
+      </div>
+ 
+      
+      
+    </div>
+  </section>
+</div>
+
+<!-- Side Menu -->
+<div class="overlay" id="overlay"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="menu-header">
+    <div class="menu-title">القائمة</div>
+    <button class="close-menu" id="closeMenu">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
+  <div class="menu-items">
+    <a href="go:home" class="menu-item" tabindex="0">
+      <div class="menu-icon">
+        <i class="fas fa-home"></i>
+      </div>
+      <div class="menu-text">الصفحة الرئيسية</div>
+    </a>
+    
+    <a href="go:subscriptions" class="menu-item" tabindex="0">
+      <div class="menu-icon">
+        <i class="fas fa-star"></i>
+      </div>
+      <div class="menu-text">اشتراكي</div>
+    </a>
+    
+    <a href="go:favorites" class="menu-item" tabindex="0">
+      <div class="menu-icon">
+        <i class="fas fa-heart"></i>
+      </div>
+      <div class="menu-text">المفضلة</div>
+    </a>
+    
+    <a href="go:history" class="menu-item" tabindex="0">
+      <div class="menu-icon">
+        <i class="fas fa-history"></i>
+      </div>
+      <div class="menu-text">سجل المشاهدة</div>
+    </a>
+    
+    <a href="https://play.google.com/store/apps/details?id=com.mv.player" class="menu-item" tabindex="0">
+      <div class="menu-icon">
+        <i class="fas fa-download"></i>
+      </div>
+      <div class="menu-text">تحميل المشغل</div>
+    </a>
+    
+    <a href="https://t.me/yalla_connect" class="menu-item" tabindex="0">
+      <div class="menu-icon">
+        <i class="fab fa-telegram"></i>
+      </div>
+      <div class="menu-text">قناتنا على التليجرام</div>
+    </a>
+    
+    <a href="https://www.facebook.com/profile.php?id=61579763360116" class="menu-item" tabindex="0">
+      <div class="menu-icon">
+        <i class="fab fa-facebook-f"></i>
+      </div>
+      <div class="menu-text">صفحتنا على فيسبوك</div>
+    </a>
+  </div>
+  
+  <div class="menu-footer">
+    Yalla Connect &copy; 2025 - جميع الحقوق محفوظة
+  </div>
+</div>
+
+<script>
+  // منع التمرير التلقائي عند تحميل الصفحة
+  document.addEventListener('DOMContentLoaded', function() {
+    // الانتقال إلى الأعلى فورًا
+    window.scrollTo(0, 0);
+    
+    // تمييز أن الصفحة قد تم تحميلها بالكامل
+    setTimeout(function() {
+      document.body.classList.add('loaded');
+      
+      // التركيز على أول بطاقة بعد التحميل
+      const firstCard = document.querySelector('.card');
+      if (firstCard) {
+        firstCard.focus();
+      }
+    }, 100);
+  });
+
+  // التأكد من البقاء في الأعلى حتى بعد اكتمال تحميل جميع الموارد
+  window.addEventListener('load', function() {
+    window.scrollTo(0, 0);
+  });
+
+  // استبدال هذا الكود:
+  /*
+  const menuBtn = document.getElementById('menuBtn');
+  const closeMenu = document.getElementById('closeMenu');
+  const overlay = document.getElementById('overlay');
+  const sideMenu = document.getElementById('sideMenu');
+  const header = document.querySelector('header');
+  const mainContainer = document.querySelector('.main-container');
+
+  menuBtn.addEventListener('click', () => {
+    overlay.classList.add('active');
+    sideMenu.classList.add('active');
+    header.classList.add('header-blur');
+    mainContainer.classList.add('main-blur');
+    document.body.style.overflow = 'hidden';
+    
+    // Focus on first menu item when menu opens
+    setTimeout(() => {
+      const firstMenuItem = document.querySelector('.menu-item');
+      if (firstMenuItem) {
+        firstMenuItem.focus();
+        document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('focused'));
+        firstMenuItem.classList.add('focused');
+      }
+    }, 100);
+  });
+  */
+
+  // ليصبح:
+  const backBtn = document.getElementById('backBtn');
+  backBtn.addEventListener('click', () => {
+    // إذا كان هناك صفحة سابقة في السجل، ارجع لها
+    if (history.length > 1) {
+      history.back();
+    } else {
+      // إذا لم يكن هناك صفحة سابقة، انتقل للصفحة الرئيسية
+      window.location.href = "go:sportstv";
+    }
+  });
+
+  const closeMenu = document.getElementById('closeMenu');
+  const overlay = document.getElementById('overlay');
+  const sideMenu = document.getElementById('sideMenu');
+  const header = document.querySelector('header');
+  const mainContainer = document.querySelector('.main-container');
+
+  closeMenu.addEventListener('click', () => {
+    overlay.classList.remove('active');
+    sideMenu.classList.remove('active');
+    header.classList.remove('header-blur');
+    mainContainer.classList.remove('main-blur');
+    document.body.style.overflow = '';
+    
+    // Focus back to menu button when menu closes
+    // menuBtn.focus();
+  });
+
+  overlay.addEventListener('click', () => {
+    overlay.classList.remove('active');
+    sideMenu.classList.remove('active');
+    header.classList.remove('header-blur');
+    mainContainer.classList.remove('main-blur');
+    document.body.style.overflow = '';
+  });
+
+  // Refresh Button with Spin Animation
+  const refreshBtn = document.getElementById('refreshBtn');
+  refreshBtn.addEventListener('click', function() {
+    const icon = this.querySelector('i');
+    icon.style.transform = 'rotate(0deg)';
+    icon.style.transition = 'transform 0.5s ease';
+    
+    setTimeout(() => {
+      icon.style.transform = 'rotate(360deg)';
+      setTimeout(() => {
+        location.reload();
+      }, 500);
+    }, 10);
+  });
+
+  // Refresh All Button
+  const refreshAllBtn = document.getElementById('refreshAllBtn');
+  refreshAllBtn.addEventListener('click', function() {
+    const icon = this.querySelector('i');
+    icon.style.transform = 'rotate(0deg)';
+    icon.style.transition = 'transform 0.5s ease';
+    
+    setTimeout(() => {
+      icon.style.transform = 'rotate(360deg)';
+      setTimeout(() => {
+        location.reload();
+      }, 500);
+    }, 10);
+  });
+
+  // Keyboard Navigation for TV/Remote
+  document.addEventListener('keydown', (e) => {
+    // Handle escape key for closing menu
+    if (e.key === 'Escape' && sideMenu.classList.contains('active')) {
+      overlay.classList.remove('active');
+      sideMenu.classList.remove('active');
+      header.classList.remove('header-blur');
+      mainContainer.classList.remove('main-blur');
+      document.body.style.overflow = '';
+      // menuBtn.focus();
+      return;
+    }
+
+    // Handle arrow keys for navigation
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      
+      // Check if menu is open
+      if (sideMenu.classList.contains('active')) {
+        handleMenuNavigation(e);
+      } else {
+        handleCardNavigation(e);
+      }
+    }
+  });
+
+  // Handle card navigation with arrow keys
+  function handleCardNavigation(e) {
+    const cards = Array.from(document.querySelectorAll('.card'));
+    let focusedCard = document.querySelector('.card.focused');
+    
+    // If no card is focused, start from the first card
+    if (!focusedCard && cards.length > 0) {
+      focusedCard = cards[0];
+    }
+    
+    const currentIndex = cards.indexOf(focusedCard);
+    let nextIndex = currentIndex;
+    
+    // Calculate next index based on key pressed
+    if (e.key === 'ArrowRight') {
+      nextIndex = currentIndex - 1;
+    } else if (e.key === 'ArrowLeft') {
+      nextIndex = currentIndex + 1;
+    } else if (e.key === 'ArrowUp') {
+      nextIndex = currentIndex - Math.floor(window.innerWidth / 280);
+    } else if (e.key === 'ArrowDown') {
+      nextIndex = currentIndex + Math.floor(window.innerWidth / 280);
+    }
+    
+    // Ensure next index is within bounds
+    nextIndex = Math.max(0, Math.min(nextIndex, cards.length - 1));
+    
+    // Update focus
+    if (nextIndex !== currentIndex) {
+      // Remove focus from all cards
+      cards.forEach(card => card.classList.remove('focused'));
+      
+      // Add focus to new card
+      cards[nextIndex].classList.add('focused');
+      cards[nextIndex].focus();
+      
+      // Scroll into view if needed
+      cards[nextIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+      });
+    }
+  }
+
+  // تعديل دالة handleCardNavigation
+  function handleCardNavigation(e) {
+    const cards = Array.from(document.querySelectorAll('.card'));
+    let focusedCard = document.querySelector('.card.focused');
+    
+    if (!focusedCard && cards.length > 0) {
+      focusedCard = cards[0];
+    }
+    
+    const currentIndex = cards.indexOf(focusedCard);
+    let nextIndex = currentIndex;
+    const cardsPerRow = Math.floor(window.innerWidth / 300); // حساب عدد البطاقات في كل صف
+    
+    if (e.key === 'ArrowRight') {
+      nextIndex = currentIndex - 1;
+    } else if (e.key === 'ArrowLeft') {
+      nextIndex = currentIndex + 1;
+    } else if (e.key === 'ArrowUp') {
+      nextIndex = currentIndex - cardsPerRow;
+    } else if (e.key === 'ArrowDown') {
+      nextIndex = currentIndex + cardsPerRow;
+    } else if (e.key === 'Enter' || e.key === 'OK') {
+      if (focusedCard) {
+        const link = focusedCard.querySelector('.card-link');
+        if (link) link.click();
+      }
+      return;
+    }
+    
+    // التأكد من أن المؤشر ضمن الحدود
+    nextIndex = Math.max(0, Math.min(nextIndex, cards.length - 1));
+    
+    if (nextIndex !== currentIndex) {
+      cards.forEach(card => card.classList.remove('focused'));
+      cards[nextIndex].classList.add('focused');
+      cards[nextIndex].focus();
+      
+      // Scroll into view مع تحسينات للـ TV
+      cards[nextIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center'
+      });
+    }
+  }
+
+  // Initialize Favorites and History
+  if (!localStorage.getItem('favorites')) {
+    localStorage.setItem('favorites', JSON.stringify([]));
+  }
+  if (!localStorage.getItem('watchHistory')) {
+    localStorage.setItem('watchHistory', JSON.stringify([]));
+  }
+
+    
+  // Show History Modal
+  function showHistory() {
+    const history = JSON.parse(localStorage.getItem('watchHistory'));
+    const modal = createModal('سجل المشاهدة');
+    
+    if (history.length === 0) {
+      const emptyMsg = document.createElement('div');
+      emptyMsg.textContent = 'لا توجد عناصر في سجل المشاهدة حتى الآن';
+      emptyMsg.style.textAlign = 'center';
+      emptyMsg.style.padding = '20px';
+      emptyMsg.style.color = 'var(--text-secondary)';
+      modal.content.appendChild(emptyMsg);
+    } else {
+      const container = document.createElement('div');
+      container.className = 'grid-cards';
+      container.style.padding = '10px';
+      
+      history.forEach(item => {
+        const card = createCard(item);
+        container.appendChild(card);
+      });
+      
+      modal.content.appendChild(container);
+    }
+    
+    document.body.appendChild(modal.element);
+  }
+
+  // Show Account Subscription Info - Professional Responsive Design
+  function showAccountSubscription() {
+    // بيانات الاشتراك
+    const subscriptionData = {
+        accountName: "Yalla Connect VIP",
+        subscriptionCode: "YC-VIP-2025-8765",
+        startDate: "15/08/2025",
+        expiryDate: "15/08/2026",
+        status: "نشط",
+        remainingDays: "365 يوم",
+        subscriptionType: "باقة الاشتراك السنوي المميزة"
+    };
+
+    const modal = createModal('معلومات اشتراكي');
+    
+    // إعدادات أساسية للنافذة
+    modal.content.style.padding = '0';
+    modal.content.style.maxHeight = '70vh';
+    modal.content.style.overflowY = 'auto';
+    
+    // تصميم البطاقة الرئيسية
+    const subscriptionCard = document.createElement('div');
+    subscriptionCard.style.background = '#272727';
+    subscriptionCard.style.color = 'white';
+    subscriptionCard.style.width = '100%';
+    subscriptionCard.style.minHeight = '100%';
+    subscriptionCard.style.boxSizing = 'border-box';
+    subscriptionCard.style.position = 'relative';
+    subscriptionCard.style.overflow = 'hidden';
+    
+    // تأثيرات زخرفية
+    const addDecoration = (top, right, size, opacity) => {
+        const deco = document.createElement('div');
+        deco.style.position = 'absolute';
+        deco.style.top = top;
+        deco.style.right = right;
+        deco.style.width = size;
+        deco.style.height = size;
+        deco.style.borderRadius = '50%';
+        deco.style.background = `rgba(255, 255, 255, ${opacity})`;
+        subscriptionCard.appendChild(deco);
+    };
+    
+    addDecoration('-50px', '-50px', '200px', '0.1');
+    addDecoration('80%', '20%', '100px', '0.08');
+    addDecoration('30%', '-30px', '150px', '0.05');
+    
+    // محتوى البطاقة
+    const cardContent = document.createElement('div');
+    cardContent.style.position = 'relative';
+    cardContent.style.zIndex = '2';
+    cardContent.style.padding = '20px';
+    cardContent.style.maxWidth = '100%';
+    cardContent.style.boxSizing = 'border-box';
+    
+    // العنوان الرئيسي
+    const cardTitle = document.createElement('h2');
+    cardTitle.textContent = subscriptionData.accountName;
+    cardTitle.style.margin = '0 0 25px 0';
+    cardTitle.style.fontSize = 'clamp(1.5rem, 4vw, 2rem)';
+    cardTitle.style.fontWeight = 'bold';
+    cardTitle.style.textAlign = 'center';
+    cardTitle.style.textShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
+    
+    // حاوية المعلومات
+    const infoContainer = document.createElement('div');
+    infoContainer.style.display = 'grid';
+    infoContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(250px, 1fr))';
+    infoContainer.style.gap = '15px';
+    infoContainer.style.marginBottom = '25px';
+    
+    // دالة إنشاء عنصر معلومات
+    const createInfoBox = (label, value, isHighlight = false) => {
+        const box = document.createElement('div');
+        box.style.background = 'rgba(0, 0, 0, 0.25)';
+        box.style.borderRadius = '8px';
+        box.style.padding = '15px';
+        box.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+        
+        const labelEl = document.createElement('div');
+        labelEl.textContent = label;
+        labelEl.style.fontSize = '0.95rem';
+        labelEl.style.color = 'rgba(255, 255, 255, 0.85)';
+        labelEl.style.marginBottom = '8px';
+        
+        const valueEl = document.createElement('div');
+        valueEl.textContent = value;
+        valueEl.style.fontSize = isHighlight ? '1.25rem' : '1.1rem';
+        valueEl.style.fontWeight = isHighlight ? 'bold' : '600';
+        valueEl.style.color = 'white';
+        
+        box.appendChild(labelEl);
+        box.appendChild(valueEl);
+        return box;
+    };
+    
+    // إضافة عناصر المعلومات
+    infoContainer.appendChild(createInfoBox('نوع الاشتراك', subscriptionData.subscriptionType));
+    infoContainer.appendChild(createInfoBox('حالة الاشتراك', subscriptionData.status, true));
+    infoContainer.appendChild(createInfoBox('تاريخ الاشتراك', subscriptionData.startDate));
+    infoContainer.appendChild(createInfoBox('تاريخ الانتهاء', subscriptionData.expiryDate));
+    infoContainer.appendChild(createInfoBox('المدة المتبقية', subscriptionData.remainingDays, true));
+    
+    // قسم كود التفعيل
+    const codeSection = document.createElement('div');
+    codeSection.style.background = 'rgba(0, 0, 0, 0.3)';
+    codeSection.style.borderRadius = '8px';
+    codeSection.style.padding = '20px';
+    codeSection.style.textAlign = 'center';
+    
+    const codeLabel = document.createElement('div');
+    codeLabel.textContent = 'كود التفعيل الخاص بك';
+    codeLabel.style.fontSize = '1.1rem';
+    codeLabel.style.marginBottom = '15px';
+    codeLabel.style.color = 'rgba(255, 255, 255, 0.85)';
+    
+    const codeValue = document.createElement('div');
+    codeValue.textContent = subscriptionData.subscriptionCode;
+    codeValue.style.fontSize = 'clamp(1.3rem, 5vw, 1.8rem)';
+    codeValue.style.fontWeight = 'bold';
+    codeValue.style.letterSpacing = '2px';
+    codeValue.style.color = 'white';
+    codeValue.style.padding = '15px';
+    codeValue.style.background = 'rgba(0, 0, 0, 0.4)';
+    codeValue.style.borderRadius = '6px';
+    codeValue.style.display = 'inline-block';
+    codeValue.style.width = '100%';
+    codeValue.style.boxSizing = 'border-box';
+    codeValue.style.overflowX = 'auto';
+    codeValue.style.whiteSpace = 'nowrap';
+    
+    codeSection.appendChild(codeLabel);
+    codeSection.appendChild(codeValue);
+    
+    // تجميع العناصر
+    cardContent.appendChild(cardTitle);
+    cardContent.appendChild(infoContainer);
+    cardContent.appendChild(codeSection);
+    subscriptionCard.appendChild(cardContent);
+    modal.content.appendChild(subscriptionCard);
+    
+    document.body.appendChild(modal.element);
+  }
+
+  // Create Modal
+  function createModal(title) {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0,0,0,0.8)';
+    overlay.style.zIndex = '2000';
+    overlay.style.display = 'flex';
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal-container';
+    modal.style.backgroundColor = 'var(--card-bg)';
+    modal.style.borderRadius = '10px';
+    modal.style.width = '90%';
+    modal.style.maxWidth = '1000px';
+    modal.style.maxHeight = '80vh';
+    modal.style.overflow = 'hidden';
+    modal.style.boxShadow = '0 5px 20px rgba(0,0,0,0.5)';
+    
+    const header = document.createElement('div');
+    header.className = 'modal-header';
+    header.style.display = 'flex';
+    header.style.justifyContent = 'space-between';
+    header.style.alignItems = 'center';
+    header.style.padding = '15px 20px';
+    header.style.backgroundColor = 'var(--primary)';
+    
+    const headerTitle = document.createElement('div');
+    headerTitle.className = 'modal-title';
+    headerTitle.textContent = title;
+    headerTitle.style.fontWeight = 'bold';
+    headerTitle.style.fontSize = '1.2rem';
+    headerTitle.style.color = 'white';
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-close';
+    closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+    closeBtn.style.background = 'none';
+    closeBtn.style.border = 'none';
+    closeBtn.style.color = 'white';
+    closeBtn.style.fontSize = '1.2rem';
+    closeBtn.style.cursor = 'pointer';
+    closeBtn.tabIndex = 0;
+    
+    closeBtn.addEventListener('click', () => {
+      overlay.remove();
+    });
+    
+    header.appendChild(headerTitle);
+    header.appendChild(closeBtn);
+    
+    const content = document.createElement('div');
+    content.className = 'modal-content';
+    content.style.overflowY = 'auto';
+    content.style.maxHeight = 'calc(80vh - 60px)';
+    
+    modal.appendChild(header);
+    modal.appendChild(content);
+    overlay.appendChild(modal);
+    
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.remove();
+      }
+    });
+    
+    // Focus on close button when modal opens
+    setTimeout(() => {
+      closeBtn.focus();
+    }, 100);
+    
+    return {
+      element: overlay,
+      content: content
+    };
+  }
+
+  // Create Card for Modal
+  function createCard(item) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.position = 'relative';
+    card.tabIndex = 0;
+    
+    const link = document.createElement('a');
+    link.href = item.id;
+    link.className = 'card-link';
+    
+    const img = document.createElement('img');
+    img.src = item.image;
+    img.className = 'card-image';
+    img.style.height = '180px';
+    img.style.objectFit = 'cover';
+    
+    const content = document.createElement('div');
+    content.className = 'card-content';
+    
+    const name = document.createElement('h3');
+    name.className = 'card-name';
+    name.textContent = item.title;
+    
+    const footer = document.createElement('div');
+    footer.className = 'card-footer';
+    
+    const date = document.createElement('div');
+    date.style.fontSize = '0.8rem';
+    date.style.color = 'var(--text-secondary)';
+    date.textContent = new Date(item.date).toLocaleString();
+    
+    content.appendChild(name);
+    content.appendChild(date);
+    
+    link.appendChild(img);
+    link.appendChild(content);
+    
+    card.appendChild(link);
+    
+    return card;
+  }
+
+  // Show Notification
+  function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.style.position = 'fixed';
+    notification.style.bottom = '20px';
+    notification.style.right = '20px';
+    notification.style.backgroundColor = 'var(--primary)';
+    notification.style.color = 'white';
+    notification.style.padding = '10px 20px';
+    notification.style.borderRadius = '5px';
+    notification.style.zIndex = '10000';
+    notification.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)';
+    notification.style.animation = 'fadeIn 0.3s ease-in-out';
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.animation = 'fadeOut 0.3s ease-in-out';
+      setTimeout(() => {
+        notification.remove();
+      }, 300);
+    }, 3000);
+  }
+
+  // Add Animations
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(10px); }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Enhanced Menu Items Interaction
+  document.querySelectorAll('.menu-item').forEach(item => {
+    // Add hover effect
+    item.addEventListener('mouseenter', function() {
+      this.style.transform = 'translateX(-5px)';
+    });
+    
+    item.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateX(0)';
+    });
+    
+    // Add click effect
+    item.addEventListener('mousedown', function() {
+      this.style.transform = 'translateX(-5px) scale(0.98)';
+    });
+    
+    item.addEventListener('mouseup', function() {
+      this.style.transform = 'translateX(-5px) scale(1)';
+    });
+    
+    // Add focus effect for keyboard navigation
+    item.addEventListener('focus', function() {
+      document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('focused'));
+      this.classList.add('focused');
+    });
+  });
+
+  // Improve menu opening animation
+  sideMenu.style.transition = 'left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
+
+  // تحسين تأثير الضغط على الأزرار
+  document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('mousedown', function() {
+      this.style.borderColor = '#0066cc';
+      this.style.transform = 'translateX(-5px) scale(0.98)';
+    });
+    
+    item.addEventListener('mouseup', function() {
+      this.style.borderColor = 'rgba(120, 120, 120, 0.5)';
+      this.style.transform = 'translateX(-5px) scale(1)';
+    });
+    
+    item.addEventListener('mouseleave', function() {
+      this.style.borderColor = 'rgba(120, 120, 120, 0.3)';
+    });
+  });
+  
+  // Focus management for cards
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('focus', function() {
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('focused'));
+      this.classList.add('focused');
+    });
+    
+    card.addEventListener('mouseover', function() {
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('focused'));
+      this.classList.add('focused');
+      this.focus();
+    });
+  });
+
+  // Auto focus first card on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const firstCard = document.querySelector('.card');
+    if (firstCard) {
+      firstCard.classList.add('focused');
+      firstCard.focus();
+    }
+  });
+  
+  // إضافة هذا الكود لمعالجة أزرار الريموت الإضافية
+  document.addEventListener('keydown', (e) => {
+    // زر العودة للخلف (Back)
+    if (e.key === 'Backspace' || e.key === 'Back') {
+      if (sideMenu.classList.contains('active')) {
+        closeMenu.click();
+        e.preventDefault();
+      }
+    }
+    
+    // زر القائمة (Menu)
+    if (e.key === 'ContextMenu') {
+      // menuBtn.click();
+      e.preventDefault();
+    }
+  });
+
+  // تحسين تحميل الصور
+  document.querySelectorAll('.card-image').forEach(img => {
+    // إضافة lazy loading للصور
+    img.loading = 'lazy';
+    
+    // إضافة صورة بديلة في حالة الخطأ
+    img.onerror = function() {
+      this.src = 'placeholder-image.jpg';
+    };
+  });
+
+  // استبدال دالة التحديث الحالية بهذه الدالة المحسنة
+  function refreshPage(hardRefresh = false) {
+    // إضافة مؤشر تحميل
+    const loadingIndicator = document.createElement('div');
+    loadingIndicator.style.position = 'fixed';
+    loadingIndicator.style.top = '0';
+    loadingIndicator.style.left = '0';
+    loadingIndicator.style.width = '100%';
+    loadingIndicator.style.height = '3px';
+    loadingIndicator.style.backgroundColor = 'var(--primary)';
+    loadingIndicator.style.zIndex = '9999';
+    loadingIndicator.style.animation = 'loading 2s infinite';
+    
+    document.body.appendChild(loadingIndicator);
+    
+    // إضافة أنيميشن للتحميل
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes loading {
+        0% { width: 0%; left: 0; right: auto; }
+        50% { width: 100%; left: 0; right: auto; }
+        51% { left: auto; right: 0; }
+        100% { width: 0%; left: auto; right: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // إجراء التحديث بعد تأخير بسيط لرؤية المؤشر
+    setTimeout(() => {
+      if (hardRefresh) {
+        // تحديث قوي مع إعادة جلب البيانات من الخادم
+        window.location.reload(true);
+      } else {
+        // تحديث عادي مع إعادة تحميل الصفحة
+        window.location.reload();
+      }
+      
+      // إزالة المؤشر بعد التحديث (على الرغم من أن الصفحة ستتحدى)
+      loadingIndicator.remove();
+      style.remove();
+    }, 800);
+  }
+
+  // تعديل معالجات الأحداث للأزرار
+  refreshBtn.addEventListener('click', function() {
+    const icon = this.querySelector('i');
+    icon.classList.add('refresh-spin');
+    setTimeout(() => {
+      refreshPage(true); // تحديث قوي
+    }, 500);
+  });
+
+  refreshAllBtn.addEventListener('click', function() {
+    const icon = this.querySelector('i');
+    icon.classList.add('refresh-spin');
+    setTimeout(() => {
+      refreshPage(true); // تحديث قوي
+    }, 500);
+  });
+
+  // إضافة هذا الكود لإزالة كلاس الـ spin بعد الانتهاء
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.fa-sync-alt').forEach(icon => {
+      icon.addEventListener('animationend', function() {
+        this.classList.remove('refresh-spin');
+      });
+    });
+  });
+</script>
+</body>
+</html>
