@@ -1,937 +1,1790 @@
-<!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-
-  <meta charset="UTF-8" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <title>Magic Connect</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
-
-  <style>
-
-    body {
-
-      margin: 0;
-
-      background-color: #0f0f0f;
-
-      font-family: 'Cairo', sans-serif;
-
-      color: white;
-
-    }
-
-
-
-    /* Header */
-
-    header {
-
-      background: linear-gradient(135deg, #222, #444, #222);
-
-      padding: 10px 16px;
-
-      display: grid;
-
-      grid-template-columns: 1fr auto 1fr;
-
-      align-items: center;
-
-      position: sticky;
-
-      top: 0;
-
-      z-index: 1000;
-
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-
-      font-family: 'Montserrat', sans-serif;
-
-    }
-
-    
-
-    .header-left {
-
-      justify-self: start;
-
-    }
-
-    
-
-    .header-center {
-
-      justify-self: center;
-
-    }
-
-    
-
-    .header-right {
-
-      justify-self: end;
-
-    }
-
-    
-
-    .logo-text {
-
-      font-weight: 700;
-
-      font-size: 1.2rem;
-
-      color: var(--light);
-
-      font-family: 'Montserrat', sans-serif;
-
-    }
-
-    
-
-    .header-btn {
-
-      background: none;
-
-      border: none;
-
-      color: var(--light);
-
-      font-size: 1.2rem;
-
-      cursor: pointer;
-
-      transition: all 0.3s ease;
-
-      width: 36px;
-
-      height: 36px;
-
-      border-radius: 50%;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      background-color: rgba(255, 255, 255, 0.15);
-
-    }
-
-    
-
-    .header-btn:hover {
-
-      background-color: rgba(255, 255, 255, 0.15);
-
-    }
-
-    
-
-    .grid-container {
-
-      display: grid;
-
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-
-      gap: 8px;
-
-      padding: 10px 8px;
-
-      overflow-y: auto;
-
-      margin-top: 0px;
-
-    }
-
-
-
-    .channel-box {
-
-      background: linear-gradient(135deg, #222, #444, #222);
-
-      border-radius: 12px;
-
-      text-align: center;
-
-      height: 125px;
-
-      border: 1px solid #555;
-
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-
-      justify-content: center;
-
-      transition: 0.3s;
-
-    }
-
-
-
-    .channel-box img {
-
-      width: 90px;
-
-      height: 90px;
-
-      object-fit: contain;
-
-      border-radius: 10px;
-
-    }
-
-
-
-    .channel-title {
-
-      font-size: 13px;
-
-      color: #fff;
-
-    }
-
-
-
-    @media (max-width: 600px) {
-
-      .grid-container {
-
-        grid-template-columns: repeat(3, 1fr);
-
-        gap: 8px;
-
-        padding: 10px 8px;
-
-      }
-
-    }
-
-    
-
-    
-
-
-    
-    
-
-    @keyframes spin {
-
-      from { transform: rotate(0deg); }
-
-      to { transform: rotate(360deg); }
-
-    }
-
-
-
-    .rotate {
-
-      animation: spin 0.6s linear;
-
-    }
-
-
-
-    .channel-box {
-
-      animation: fadeInUp 0.4s ease;
-
-    }
-
-
-
-    @keyframes fadeInUp {
-
-      from { opacity: 0; transform: translateY(20px); }
-
-      to { opacity: 1; transform: translateY(0); }
-
-    }
-
-
-
-    a:focus {
-
-      outline: none !important;
-
-    }
-
-    
-
-    
-    
-
-    /* إضافة لضمان ظهور التركيز */
-
-    a:focus-visible {
-
-      outline: none;
-
-    }
-
-  </style>
-
-</head>
-
-<body>
-
-
-
-  <header>
-
-    <div class="header-left">
-
-      <button class="header-btn" id="backBtn">
-
-        <i class="fas fa-arrow-left"></i>
-
-      </button>
-
-    </div>
-
-    <div class="header-center">
-
-      <div class="logo-text">Magic Connect</div>
-
-    </div>
-
-    <div class="header-right">
-
-      <button class="header-btn" id="refreshBtn">
-
-        <i class="fas fa-sync-alt"></i>
-
-      </button>
-
-    </div>
-
-  </header>
-
-  
-
-
-
-  <div class="grid-container">
-
-    <!-- بطاقات القنوات مع روابط -->
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vYWtvbW92LmNvbS9ha29fYWRtaW4vY29kL2NoYW5uZWwucGhwP2lkPTUwMDMxOTciLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjdmYWFmZTQ4NWRiNzM5NWI5NTgzMjIyYTNhNmU3ODlkOjE2MzkwNmJhMzJkZDNkNjExYWFkNTc4OWNiZDAwODU4Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://up6.cc/2025/08/175553206567471.png" />
-
-        <div class="channel-title">beIN NEWS</div>
-
-      </div>
-
-    </a>
-
-
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vYWtvbW92LmNvbS9ha29fYWRtaW4vY29kL2NoYW5uZWwucGhwP2lkPTUwMDMxOTYiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImRlY2UxNzY3NjhmNjM5YmNiYWY5N2ViY2E5Yzc0MTY0OmRkNWYxZjBiZmU4N2IyM2ViOTQxNjBhZjUxNjcxNjcwIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://up6.cc/2025/08/175553206574262.png" />
-
-        <div class="channel-title">beIN SPORTS</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vYWtvbW92LmNvbS9ha29fYWRtaW4vY29kL2NoYW5uZWwucGhwP2lkPTUwMDMxOTgiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImY2NGY3ZWM2Nzg4NTM4NjNiYzYwZGM3NGQ5ODM0ZjE0OjRkY2VhYjYwYTdjNDI4ODQ4NGVhODU2ZjhjNDFmNTZiIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://up6.cc/2025/08/175553206580213.png" />
-
-        <div class="channel-title">beIN NBA</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vYWtvbW92LmNvbS9ha29fYWRtaW4vY29kL2NoYW5uZWwucGhwP2lkPTUwMDMxOTUiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjQzMGRiMjcyYzdlOTM3NzliMmRiZjYzZDYyYjBjZWIzOjliNjE0OWU1OTYyZWMzNjg0NzA0YWY3Y2I5ZGFjMTc5Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://up6.cc/2025/08/175553279618731.png" />
-
-        <div class="channel-title">PREMIER</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDgtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImYxZGFjMmY5MzdjOTMzOGY4ZTdjMzM5NjNkMDZjNDg5OjhhYjE5ZjYzOWZlMTU1MmM3NDYzZjRiOTc4YzQxYzlkIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS1_DIGITAL_Mono.png" />
-
-        <div class="channel-title">beIN SPORTS 1</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDktZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjQ2MmI2NGQwNTk1YjM4MzhiNGQ2OGViMGU2YzU5NDQ4OmI0ZDMwZDFiZmU4MWQ0Y2ZmYzUyNzkwYmI2YzVkOTc5Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2021/02/beIN_SPORTS2_DIGITAL_Mono.png" />
-
-        <div class="channel-title">beIN SPORTS 2</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTAtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImNhYzkxODRkNjVjZTM3ODk4YjQxMGIwMjVmM2FkMjBhOmUxNGNiNzg0NWIwNjI4Mzc4MGVmZWY5M2ViMjNlYWY2Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS3_DIGITAL_Mono.png" />
-
-        <div class="channel-title">beIN SPORTS 3</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTEtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjQ2OGRiNWU0OTlkZDNiMWM5YTNjNWM5OTY5ZTJhZWE4OjFhNWUwMjQ3YWFlZmFkNzRjNTkxMjA2NGI2NDg1OWUyIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS4_DIGITAL_Mono.png" />
-
-        <div class="channel-title">beIN SPORTS 4</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTItZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjQzNThiMmUzOGU5NzMyODFiNmY2OTcwZTk1Y2QxM2RlOjZjNjg3Y2Y1NjJhODNmNmY2MTE3MzFiNDY0NmZmNTg0Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS5_DIGITAL_Mono.png" />
-
-        <div class="channel-title">beIN SPORTS 5</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTMtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjQ0NTcwYjE5ODcwNzMzMmNhYWI1NjkyNGQyNTNlZTI1OmQ5NWVmYmM2NTk0ZWY1NzNhMjY5YjkxMmUzM2I3ZjcyIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2021/02/beIN_SPORTS6_DIGITAL_Mono-d-1.png" />
-
-        <div class="channel-title">beIN SPORTS 6</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTQtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjI0MzI1ODIxMmQxNzM5OWY5ZTA0NDIzYjQ1MGU0NWFiOjRkMjUxYmZjNGZjMWMzMDVhZGMyYzA3NTk0MjM2MjUzIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS7_DIGITAL_Mono.png" />
-
-        <div class="channel-title">beIN SPORTS 7</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTUtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImZhNThlN2ViM2E0ZDM2OTQ5YzcxYWMzZWY2ZTg2OWQ4OmI3OTliNzg4Y2YxM2M3YmJiYTk1NDI2Yzk0ODc5ZjMwIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2023/09/logos-_beINSPORTS8.png" />
-
-        <div class="channel-title">beIN SPORTS 8</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTYtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6Ijk4ZWVkZWEzZTU0NzM2ODg4NjE2OGJiN2Y4ZDJlOTAzOjMwNTY3MGZmN2I3NDk1YjA5M2U3NjFhNWU1NTA2OTdkIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2023/09/logos-_beINSPORTS9.png" />
-
-        <div class="channel-title">beIN SPORTS 9</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTctZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjZjYzRkZDNhNTQ5NzMxMGJhMmUzNGNlZWFjZDFjMTliOmU5YzVkMjRlYTQxNGQwYTJhNzEwMGZjMWZjMzZhMzg3Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS_XTRA1_Digital_Mono.png" />
-
-        <div class="channel-title">beIN XTRA 1</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTgtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImM4MDA5NTVjNjZiYzM2OTBhZjIyNDg2ZDJkNWJjZTc1OjAxNGZmMTNlNTU0NzYxMDllZWZmMTFhYWY1MjcwZjZhIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS_XTRA2_Digital_Mono.png" />
-
-        <div class="channel-title">beIN XTRA 2</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTktZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjcwMzIxZDAyNGVkNTMzYTM4YWI5NDVhMzU0MTFhNzY1OmZmNzcyOGRjZGJlNGJkMjg5NTFkMTJmNWNkYTljNGM2Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2023/09/logos-_beINSPORTSXTRA3.png" />
-
-        <div class="channel-title">beIN XTRA 3</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtNzQtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6Ijc4YjU2YTg4MDM5MDM2NTc4MDA2YjcyZjhmMjRjNWMyOmE4NTBlNjg5Mzc3Y2E2MmE0NGM2YjBjZWJmNDg2MDZlIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2025/01/beIN_SPORTS_XTRA_04_bein.com_.png" />
-
-        <div class="channel-title">beIN XTRA 4</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtNzItZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjM5ZjY2MDgxNjIzZDMyMDhhNDY2Zjg1NjkxZDFiOWNhOmJmZDI0NTEyMWYxNjYxOGViM2E0NGZmNGQzYjM0OWIxIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2025/01/beIN_SPORTS_XTRA_05_bein.com_.png" />
-
-        <div class="channel-title">beIN XTRA 5</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMjAtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImY2MWI0OTI4NzJjMzM4NTY5NDBkNmM3NTZkMTQ2YWMzOmExZmIyM2E3M2ZjYTg4Zjg1ZjQ3NTIwMmQ0NGJiNTNlIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS1_ENGLISH_Digital_Mono.png" />
-
-        <div class="channel-title">beIN ENGLISH 1</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMjEtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImI4MjVjODA4YmM3YzNmN2Y5NTExNmM3ZDIxNTliMzVmOjBlZWE4ZjhiODBlYTIxYmYxNjlmYzNkOTFiZWMxNzAyIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS2_ENGLISH_Digital_Mono.png" />
-
-        <div class="channel-title">beIN ENGLISH 2</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMjItZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImVkODY1NDc5ODNiYjNjMjZhZDM1MDcxNDQ4ZGIyY2JlOmI3ZjVkYWRmZTFmNTQzNTc0MmI4MmJkZWE4MGU4ODAxIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS1_FRENCH_Digital_Mono.png" />
-
-        <div class="channel-title">beIN FRENCH 1</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMjMtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjY4Y2YzNjYzZjk1NjM5YWM5MzMzZWVjOTRmMzhiYzc1OjQ4MWI2MDk0MmM2MTdlZTQwZDI3YjczYjc0N2E5NWQxIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS2_FRENCH_Digital_Mono.png" />
-
-        <div class="channel-title">beIN FRENCH 2</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDEtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6Ijg1ZmM5NDU0YTJlOTNlNmI5NzQ1ZjRjNTliYzNjZWJlOmUzNzc3YTA1NzgyYjIyZDNlM2IyNjY4N2M3YTdjYjgzIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
-
-        <div class="channel-title">TOD 1</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="go:tod2" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
-
-        <div class="channel-title">TOD 2</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDMtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjQwNTgxODBkOGU3NzMyZDNiYzA4Nzg0Y2RlOGY3MWVmOmNlNmRiNjY1Y2NlODRkMjQ3NzBkOTY5MTNlMzIzYTk4Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
-
-        <div class="channel-title">TOD 3</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDQtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjY4MzJkNzM4NmU2YTM2ZWJiMjU0YzY1ZDg3ODdlNzFiOjc3ZDY2NmQ2ZmU4NjZkODdkMjBkZjA5MmUzNDY2YTZiIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
-
-        <div class="channel-title">TOD 4</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDUtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImUyNDRiOTkyYTM3MDNlMDE4NWE5ZWQ5YzllZjkyOTlkOjUwNzAzOTVhMWJjMTRjMWYyZGI0MTA4NTMyMGM0YjZlIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
-
-        <div class="channel-title">TOD 5</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDYtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjBmMTAxNDBjOTFhYTNjOTBiNzdmNThhODdjZGMzZWI1OjlmZDhlM2RlM2NlOTRjYzkyODU2NTVlNDUyZjJhYmMxIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
-
-        <div class="channel-title">TOD 6</div>
-
-      </div>
-
-    </a>
-
-    
-
-    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDctZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImU0ODhiNzRmN2JlOTM2MDY5ODM2ZDBiMDJhM2NjYjk2OmY2MWRhZWJhNDYyNWE1MDkyNTVmZGQ3Yjk0YTVlMTI1Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
-
-      <div class="channel-box">
-
-        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
-
-        <div class="channel-title">TOD 7</div>
-
-      </div>
-
-    </a>
-
-    
-
-  </div>
-
-
-
-
-<script>
-
-  document.addEventListener('DOMContentLoaded', () => {
-
-    const container = document.querySelector('.grid-container');
-
-    const items = Array.from(container.querySelectorAll('a'));
-
-    const refreshBtn = document.getElementById('refreshBtn');
-
-    const backBtn = document.getElementById('backBtn');
-
-
-
-    function getGridColumnCount() {
-
-      const style = window.getComputedStyle(container);
-
-      return style.getPropertyValue('grid-template-columns').split(' ').length;
-
-    }
-
-
-
-    function getFocusedIndex() {
-
-      return items.findIndex(item => item === document.activeElement);
-
-    }
-
-
-
-    function moveFocus(direction) {
-
-      const cols = getGridColumnCount();
-
-      let idx = getFocusedIndex();
-
-      if (idx === -1) {
-
-        return;
-
-      }
-
-
-
-      let newIndex = idx;
-
-
-
-      switch(direction) {
-
-        case 'left':
-
-          if (idx > 0) newIndex = idx - 1;
-
-          break;
-
-        case 'right':
-
-          if (idx < items.length - 1) newIndex = idx + 1;
-
-          break;
-
-        case 'up':
-
-          if (idx - cols >= 0) newIndex = idx - cols;
-
-          break;
-
-        case 'down':
-
-          if (idx + cols < items.length) newIndex = idx + cols;
-
-          break;
-
-      }
-
-
-
-      if (newIndex !== idx) {
-
-        items[newIndex].focus();
-
-        items[newIndex].scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'nearest'});
-
-      }
-
-    }
-
-
-
-    window.addEventListener('keydown', e => {
-
-      switch(e.key) {
-
-        case 'ArrowLeft':
-
-          e.preventDefault();
-
-          moveFocus('left');
-
-          break;
-
-        case 'ArrowRight':
-
-          e.preventDefault();
-
-          moveFocus('right');
-
-          break;
-
-        case 'ArrowUp':
-
-          e.preventDefault();
-
-          moveFocus('up');
-
-          break;
-
-        case 'ArrowDown':
-
-          e.preventDefault();
-
-          moveFocus('down');
-
-          break;
-
-        case 'Enter':
-
-        case 'NumpadEnter':
-
-        case 'OK':
-
-          e.preventDefault();
-
-          if (document.activeElement && document.activeElement.click) {
-
-            document.activeElement.click();
-
-          }
-
-          break;
-
-        case 'Backspace':
-
-        case 'Escape':
-
-          backBtn.click();
-
-          break;
-
-      }
-
-    });
-
-
-
-    refreshBtn.addEventListener('click', function() {
-
-      const icon = this.querySelector('i');
-
-      icon.classList.add('rotate');
-
-      
-
-      setTimeout(() => {
-
-        icon.classList.remove('rotate');
-
-        window.location.reload();
-
-      }, 600);
-
-    });
-
-
-
-    // تعديل زر الرجوع ليتجه إلى صفحة معينة
-
-    backBtn.addEventListener('click', function() {
-
-      window.location.href = 'go:todsp';
-
-    });
-
-  });
-
-</script>
-
-
-
-</body>
-
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+
+
+
+<head>
+
+
+
+  <meta charset="UTF-8" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+
+  <title>Magic Connect</title>
+
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
+
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+
+
+  <style>
+
+
+
+    body {
+
+
+
+      margin: 0;
+
+
+
+      background-color: #0f0f0f;
+
+
+
+      font-family: 'Cairo', sans-serif;
+
+
+
+      color: white;
+
+
+
+    }
+
+
+
+
+
+
+
+    /* Header */
+
+
+
+    header {
+
+
+
+      background: linear-gradient(135deg, #222, #444, #222);
+
+
+
+      padding: 10px 16px;
+
+
+
+      display: grid;
+
+
+
+      grid-template-columns: 1fr auto 1fr;
+
+
+
+      align-items: center;
+
+
+
+      position: sticky;
+
+
+
+      top: 0;
+
+
+
+      z-index: 1000;
+
+
+
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+
+
+
+      font-family: 'Montserrat', sans-serif;
+
+
+
+    }
+
+
+
+    
+
+
+
+    .header-left {
+
+
+
+      justify-self: start;
+
+
+
+    }
+
+
+
+    
+
+
+
+    .header-center {
+
+
+
+      justify-self: center;
+
+
+
+    }
+
+
+
+    
+
+
+
+    .header-right {
+
+
+
+      justify-self: end;
+
+
+
+    }
+
+
+
+    
+
+
+
+    .logo-text {
+
+
+
+      font-weight: 700;
+
+
+
+      font-size: 1.2rem;
+
+
+
+      color: var(--light);
+
+
+
+      font-family: 'Montserrat', sans-serif;
+
+
+
+    }
+
+
+
+    
+
+
+
+    .header-btn {
+
+
+
+      background: none;
+
+
+
+      border: none;
+
+
+
+      color: var(--light);
+
+
+
+      font-size: 1.2rem;
+
+
+
+      cursor: pointer;
+
+
+
+      transition: all 0.3s ease;
+
+
+
+      width: 36px;
+
+
+
+      height: 36px;
+
+
+
+      border-radius: 50%;
+
+
+
+      display: flex;
+
+
+
+      align-items: center;
+
+
+
+      justify-content: center;
+
+
+
+      background-color: rgba(255, 255, 255, 0.15);
+
+
+
+    }
+
+
+
+    
+
+
+
+    .header-btn:hover {
+
+
+
+      background-color: rgba(255, 255, 255, 0.15);
+
+
+
+    }
+
+
+
+    
+
+
+
+    .grid-container {
+
+
+
+      display: grid;
+
+
+
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+
+
+
+      gap: 8px;
+
+
+
+      padding: 10px 8px;
+
+
+
+      overflow-y: auto;
+
+
+
+      margin-top: 0px;
+
+
+
+    }
+
+
+
+
+
+
+
+    .channel-box {
+
+
+
+      background: linear-gradient(135deg, #222, #444, #222);
+
+
+
+      border-radius: 12px;
+
+
+
+      text-align: center;
+
+
+
+      height: 125px;
+
+
+
+      border: 1px solid #555;
+
+
+
+      display: flex;
+
+
+
+      flex-direction: column;
+
+
+
+      align-items: center;
+
+
+
+      justify-content: center;
+
+
+
+      transition: 0.3s;
+
+
+
+    }
+
+
+
+
+
+
+
+    .channel-box img {
+
+
+
+      width: 90px;
+
+
+
+      height: 90px;
+
+
+
+      object-fit: contain;
+
+
+
+      border-radius: 10px;
+
+
+
+    }
+
+
+
+
+
+
+
+    .channel-title {
+
+
+
+      font-size: 13px;
+
+
+
+      color: #fff;
+
+
+
+    }
+
+
+
+
+
+
+
+    @media (max-width: 600px) {
+
+
+
+      .grid-container {
+
+
+
+        grid-template-columns: repeat(3, 1fr);
+
+
+
+        gap: 8px;
+
+
+
+        padding: 10px 8px;
+
+
+
+      }
+
+
+
+    }
+
+
+
+    
+
+
+
+    
+
+
+
+
+
+    
+
+    
+
+
+
+    @keyframes spin {
+
+
+
+      from { transform: rotate(0deg); }
+
+
+
+      to { transform: rotate(360deg); }
+
+
+
+    }
+
+
+
+
+
+
+
+    .rotate {
+
+
+
+      animation: spin 0.6s linear;
+
+
+
+    }
+
+
+
+
+
+
+
+    .channel-box {
+
+
+
+      animation: fadeInUp 0.4s ease;
+
+
+
+    }
+
+
+
+
+
+
+
+    @keyframes fadeInUp {
+
+
+
+      from { opacity: 0; transform: translateY(20px); }
+
+
+
+      to { opacity: 1; transform: translateY(0); }
+
+
+
+    }
+
+
+
+
+
+
+
+    a:focus {
+
+
+
+      outline: none !important;
+
+
+
+    }
+
+
+
+    
+
+
+
+    
+
+    
+
+
+
+    /* إضافة لضمان ظهور التركيز */
+
+
+
+    a:focus-visible {
+
+
+
+      outline: none;
+
+
+
+    }
+
+
+
+  </style>
+
+
+
+</head>
+
+
+
+<body>
+
+
+
+
+
+
+
+  <header>
+
+
+
+    <div class="header-left">
+
+
+
+      <button class="header-btn" id="backBtn">
+
+
+
+        <i class="fas fa-arrow-left"></i>
+
+
+
+      </button>
+
+
+
+    </div>
+
+
+
+    <div class="header-center">
+
+
+
+      <div class="logo-text">Magic Connect</div>
+
+
+
+    </div>
+
+
+
+    <div class="header-right">
+
+
+
+      <button class="header-btn" id="refreshBtn">
+
+
+
+        <i class="fas fa-sync-alt"></i>
+
+
+
+      </button>
+
+
+
+    </div>
+
+
+
+  </header>
+
+
+
+  
+
+
+
+
+
+
+
+  <div class="grid-container">
+
+
+
+    <!-- بطاقات القنوات مع روابط -->
+
+
+
+    
+
+
+
+
+
+
+    
+
+
+    
+
+
+
+    
+
+
+
+    
+
+
+
+    
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDgtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImYxZGFjMmY5MzdjOTMzOGY4ZTdjMzM5NjNkMDZjNDg5OjhhYjE5ZjYzOWZlMTU1MmM3NDYzZjRiOTc4YzQxYzlkIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS1_DIGITAL_Mono.png" />
+
+
+
+        <div class="channel-title">beIN SPORTS 1</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDktZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjQ2MmI2NGQwNTk1YjM4MzhiNGQ2OGViMGU2YzU5NDQ4OmI0ZDMwZDFiZmU4MWQ0Y2ZmYzUyNzkwYmI2YzVkOTc5Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2021/02/beIN_SPORTS2_DIGITAL_Mono.png" />
+
+
+
+        <div class="channel-title">beIN SPORTS 2</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTAtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImNhYzkxODRkNjVjZTM3ODk4YjQxMGIwMjVmM2FkMjBhOmUxNGNiNzg0NWIwNjI4Mzc4MGVmZWY5M2ViMjNlYWY2Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS3_DIGITAL_Mono.png" />
+
+
+
+        <div class="channel-title">beIN SPORTS 3</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTEtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjQ2OGRiNWU0OTlkZDNiMWM5YTNjNWM5OTY5ZTJhZWE4OjFhNWUwMjQ3YWFlZmFkNzRjNTkxMjA2NGI2NDg1OWUyIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS4_DIGITAL_Mono.png" />
+
+
+
+        <div class="channel-title">beIN SPORTS 4</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTItZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjQzNThiMmUzOGU5NzMyODFiNmY2OTcwZTk1Y2QxM2RlOjZjNjg3Y2Y1NjJhODNmNmY2MTE3MzFiNDY0NmZmNTg0Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS5_DIGITAL_Mono.png" />
+
+
+
+        <div class="channel-title">beIN SPORTS 5</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTMtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjQ0NTcwYjE5ODcwNzMzMmNhYWI1NjkyNGQyNTNlZTI1OmQ5NWVmYmM2NTk0ZWY1NzNhMjY5YjkxMmUzM2I3ZjcyIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2021/02/beIN_SPORTS6_DIGITAL_Mono-d-1.png" />
+
+
+
+        <div class="channel-title">beIN SPORTS 6</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTQtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjI0MzI1ODIxMmQxNzM5OWY5ZTA0NDIzYjQ1MGU0NWFiOjRkMjUxYmZjNGZjMWMzMDVhZGMyYzA3NTk0MjM2MjUzIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS7_DIGITAL_Mono.png" />
+
+
+
+        <div class="channel-title">beIN SPORTS 7</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTUtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImZhNThlN2ViM2E0ZDM2OTQ5YzcxYWMzZWY2ZTg2OWQ4OmI3OTliNzg4Y2YxM2M3YmJiYTk1NDI2Yzk0ODc5ZjMwIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2023/09/logos-_beINSPORTS8.png" />
+
+
+
+        <div class="channel-title">beIN SPORTS 8</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTYtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6Ijk4ZWVkZWEzZTU0NzM2ODg4NjE2OGJiN2Y4ZDJlOTAzOjMwNTY3MGZmN2I3NDk1YjA5M2U3NjFhNWU1NTA2OTdkIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2023/09/logos-_beINSPORTS9.png" />
+
+
+
+        <div class="channel-title">beIN SPORTS 9</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTctZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjZjYzRkZDNhNTQ5NzMxMGJhMmUzNGNlZWFjZDFjMTliOmU5YzVkMjRlYTQxNGQwYTJhNzEwMGZjMWZjMzZhMzg3Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS_XTRA1_Digital_Mono.png" />
+
+
+
+        <div class="channel-title">beIN XTRA 1</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTgtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImM4MDA5NTVjNjZiYzM2OTBhZjIyNDg2ZDJkNWJjZTc1OjAxNGZmMTNlNTU0NzYxMDllZWZmMTFhYWY1MjcwZjZhIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS_XTRA2_Digital_Mono.png" />
+
+
+
+        <div class="channel-title">beIN XTRA 2</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMTktZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjcwMzIxZDAyNGVkNTMzYTM4YWI5NDVhMzU0MTFhNzY1OmZmNzcyOGRjZGJlNGJkMjg5NTFkMTJmNWNkYTljNGM2Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2023/09/logos-_beINSPORTSXTRA3.png" />
+
+
+
+        <div class="channel-title">beIN XTRA 3</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtNzQtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6Ijc4YjU2YTg4MDM5MDM2NTc4MDA2YjcyZjhmMjRjNWMyOmE4NTBlNjg5Mzc3Y2E2MmE0NGM2YjBjZWJmNDg2MDZlIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2025/01/beIN_SPORTS_XTRA_04_bein.com_.png" />
+
+
+
+        <div class="channel-title">beIN XTRA 4</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtNzItZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjM5ZjY2MDgxNjIzZDMyMDhhNDY2Zjg1NjkxZDFiOWNhOmJmZDI0NTEyMWYxNjYxOGViM2E0NGZmNGQzYjM0OWIxIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2025/01/beIN_SPORTS_XTRA_05_bein.com_.png" />
+
+
+
+        <div class="channel-title">beIN XTRA 5</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMjAtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImY2MWI0OTI4NzJjMzM4NTY5NDBkNmM3NTZkMTQ2YWMzOmExZmIyM2E3M2ZjYTg4Zjg1ZjQ3NTIwMmQ0NGJiNTNlIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS1_ENGLISH_Digital_Mono.png" />
+
+
+
+        <div class="channel-title">beIN ENGLISH 1</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMjEtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImI4MjVjODA4YmM3YzNmN2Y5NTExNmM3ZDIxNTliMzVmOjBlZWE4ZjhiODBlYTIxYmYxNjlmYzNkOTFiZWMxNzAyIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS2_ENGLISH_Digital_Mono.png" />
+
+
+
+        <div class="channel-title">beIN ENGLISH 2</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMjItZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImVkODY1NDc5ODNiYjNjMjZhZDM1MDcxNDQ4ZGIyY2JlOmI3ZjVkYWRmZTFmNTQzNTc0MmI4MmJkZWE4MGU4ODAxIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS1_FRENCH_Digital_Mono.png" />
+
+
+
+        <div class="channel-title">beIN FRENCH 1</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMjMtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjY4Y2YzNjYzZjk1NjM5YWM5MzMzZWVjOTRmMzhiYzc1OjQ4MWI2MDk0MmM2MTdlZTQwZDI3YjczYjc0N2E5NWQxIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://assets.bein.com/mena/sites/4/2015/06/beIN_SPORTS2_FRENCH_Digital_Mono.png" />
+
+
+
+        <div class="channel-title">beIN FRENCH 2</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDEtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6Ijg1ZmM5NDU0YTJlOTNlNmI5NzQ1ZjRjNTliYzNjZWJlOmUzNzc3YTA1NzgyYjIyZDNlM2IyNjY4N2M3YTdjYjgzIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
+
+
+
+        <div class="channel-title">TOD 1</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="go:tod2" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
+
+
+
+        <div class="channel-title">TOD 2</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDMtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjQwNTgxODBkOGU3NzMyZDNiYzA4Nzg0Y2RlOGY3MWVmOmNlNmRiNjY1Y2NlODRkMjQ3NzBkOTY5MTNlMzIzYTk4Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
+
+
+
+        <div class="channel-title">TOD 3</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDQtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjY4MzJkNzM4NmU2YTM2ZWJiMjU0YzY1ZDg3ODdlNzFiOjc3ZDY2NmQ2ZmU4NjZkODdkMjBkZjA5MmUzNDY2YTZiIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
+
+
+
+        <div class="channel-title">TOD 4</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDUtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImUyNDRiOTkyYTM3MDNlMDE4NWE5ZWQ5YzllZjkyOTlkOjUwNzAzOTVhMWJjMTRjMWYyZGI0MTA4NTMyMGM0YjZlIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
+
+
+
+        <div class="channel-title">TOD 5</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDYtZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6IjBmMTAxNDBjOTFhYTNjOTBiNzdmNThhODdjZGMzZWI1OjlmZDhlM2RlM2NlOTRjYzkyODU2NTVlNDUyZjJhYmMxIiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
+
+
+
+        <div class="channel-title">TOD 6</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+    <a href="intent://ako_player_exoW3sibmFtZV9zZXJ2ZXIiOiLYs9mK2LHZgdixIDEiLCJ1cmxfY2hhbm5lbCI6Imh0dHBzOi8vam9hYW4tdHYuY29tL2Jhc3NhbS90b2RfbGl2ZXMucGhwP2lkPXN2Yy1zcG8taGQtMDctZHQiLCJ1c2VyQWdlbnQiOiIiLCJyZWZlcmVyIjoiIiwicGxheWVyIjoiMTIiLCJjb29raWVzIjoiIiwiZHJtX2tleSI6ImU0ODhiNzRmN2JlOTM2MDY5ODM2ZDBiMDJhM2NjYjk2OmY2MWRhZWJhNDYyNWE1MDkyNTVmZGQ3Yjk0YTVlMTI1Iiwib3JpZ2luIjoiIn1d#Intent;scheme=xmtv;package=com.mv.player;end" style="text-decoration: none;" tabindex="0">
+
+
+
+      <div class="channel-box">
+
+
+
+        <img src="https://up6.cc/2025/08/175552217010281.jpeg" />
+
+
+
+        <div class="channel-title">TOD 7</div>
+
+
+
+      </div>
+
+
+
+    </a>
+
+
+
+    
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+<script>
+
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+
+
+
+    const container = document.querySelector('.grid-container');
+
+
+
+    const items = Array.from(container.querySelectorAll('a'));
+
+
+
+    const refreshBtn = document.getElementById('refreshBtn');
+
+
+
+    const backBtn = document.getElementById('backBtn');
+
+
+
+
+
+
+
+    function getGridColumnCount() {
+
+
+
+      const style = window.getComputedStyle(container);
+
+
+
+      return style.getPropertyValue('grid-template-columns').split(' ').length;
+
+
+
+    }
+
+
+
+
+
+
+
+    function getFocusedIndex() {
+
+
+
+      return items.findIndex(item => item === document.activeElement);
+
+
+
+    }
+
+
+
+
+
+
+
+    function moveFocus(direction) {
+
+
+
+      const cols = getGridColumnCount();
+
+
+
+      let idx = getFocusedIndex();
+
+
+
+      if (idx === -1) {
+
+
+
+        return;
+
+
+
+      }
+
+
+
+
+
+
+
+      let newIndex = idx;
+
+
+
+
+
+
+
+      switch(direction) {
+
+
+
+        case 'left':
+
+
+
+          if (idx > 0) newIndex = idx - 1;
+
+
+
+          break;
+
+
+
+        case 'right':
+
+
+
+          if (idx < items.length - 1) newIndex = idx + 1;
+
+
+
+          break;
+
+
+
+        case 'up':
+
+
+
+          if (idx - cols >= 0) newIndex = idx - cols;
+
+
+
+          break;
+
+
+
+        case 'down':
+
+
+
+          if (idx + cols < items.length) newIndex = idx + cols;
+
+
+
+          break;
+
+
+
+      }
+
+
+
+
+
+
+
+      if (newIndex !== idx) {
+
+
+
+        items[newIndex].focus();
+
+
+
+        items[newIndex].scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'nearest'});
+
+
+
+      }
+
+
+
+    }
+
+
+
+
+
+
+
+    window.addEventListener('keydown', e => {
+
+
+
+      switch(e.key) {
+
+
+
+        case 'ArrowLeft':
+
+
+
+          e.preventDefault();
+
+
+
+          moveFocus('left');
+
+
+
+          break;
+
+
+
+        case 'ArrowRight':
+
+
+
+          e.preventDefault();
+
+
+
+          moveFocus('right');
+
+
+
+          break;
+
+
+
+        case 'ArrowUp':
+
+
+
+          e.preventDefault();
+
+
+
+          moveFocus('up');
+
+
+
+          break;
+
+
+
+        case 'ArrowDown':
+
+
+
+          e.preventDefault();
+
+
+
+          moveFocus('down');
+
+
+
+          break;
+
+
+
+        case 'Enter':
+
+
+
+        case 'NumpadEnter':
+
+
+
+        case 'OK':
+
+
+
+          e.preventDefault();
+
+
+
+          if (document.activeElement && document.activeElement.click) {
+
+
+
+            document.activeElement.click();
+
+
+
+          }
+
+
+
+          break;
+
+
+
+        case 'Backspace':
+
+
+
+        case 'Escape':
+
+
+
+          backBtn.click();
+
+
+
+          break;
+
+
+
+      }
+
+
+
+    });
+
+
+
+
+
+
+
+    refreshBtn.addEventListener('click', function() {
+
+
+
+      const icon = this.querySelector('i');
+
+
+
+      icon.classList.add('rotate');
+
+
+
+      
+
+
+
+      setTimeout(() => {
+
+
+
+        icon.classList.remove('rotate');
+
+
+
+        window.location.reload();
+
+
+
+      }, 600);
+
+
+
+    });
+
+
+
+
+
+
+
+    // تعديل زر الرجوع ليتجه إلى صفحة معينة
+
+
+
+    backBtn.addEventListener('click', function() {
+
+
+
+      window.location.href = 'go:todsp';
+
+
+
+    });
+
+
+
+  });
+
+
+
+</script>
+
+
+
+
+
+
+
+</body>
+
+
+
+
 </html>
