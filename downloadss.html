@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Magic Connect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
+  <!-- ✅ أيقونة الصفحة (Favicon) -->
+  <link rel="icon" href="https://up6.cc/2025/08/175630362639481.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #000, #222, #000);
+      color: #ffffff;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #000, #222, #000);
+      padding: 30px 20px;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: #ffc107; /* تغيير اللون الأخضر إلى #ffc107 */
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 18px;
+      color: #ccc;
+      margin-bottom: 25px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      max-width: 400px;
+      margin: 15px auto;
+      background-color: #ffc107; /* تغيير اللون الأخضر إلى #ffc107 */
+      color: #000;
+      padding: 14px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .btn:hover {
+      background-color: #ffc107; /* تغيير اللون الأخضر إلى #ffc107 */
+      transform: scale(1.03);
+    }
+
+    .downloader {
+      background: linear-gradient(135deg, #222, #444, #222);
+      padding: 14px;
+      border-radius: 10px;
+      margin: 15px auto;
+      width: 100%;
+      max-width: 400px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffc107; /* تغيير اللون الأخضر إلى #ffc107 */
+      animation: fadeIn 1.2s ease forwards;
+      box-sizing: border-box;
+      text-align: center;
+      border: 1px solid rgba(255, 193, 7, 0.333); /* تغيير اللون الأخضر إلى #ffc107 */
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, #222, #444, #222);
+      margin: 20px 10px;
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 193, 7, 0.333); /* تغيير اللون الأخضر إلى #ffc107 */
+      max-width: 100%;
+      animation: fadeInUp 0.8s ease both;
+    }
+
+    .feature-icon {
+      font-size: 36px;
+      margin-bottom: 10px;
+      color: #ffc107; /* تغيير اللون الأخضر إلى #ffc107 */
+    }
+
+    .feature-title {
+      font-size: 20px;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .feature-desc {
+      font-size: 15px;
+      color: #bbb;
+    }
+
+    .features-wrapper {
+      padding: 0 20px;
+    }
+
+    .contact-buttons {
+      margin: 40px 0 20px;
+      animation: fadeInUp 1.4s ease both;
+    }
+    
+    .contact-buttons i {
+      margin-left: 8px;
+      font-size: 18px;
+      vertical-align: middle;
+    }
+
+    .contact-buttons a {
+      display: inline-block;
+      background-color: #25D366;
+      color: #fff;
+      padding: 12px 20px;
+      margin: 5px 10px;
+      border-radius: 30px;
+      font-size: 16px;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+
+    .contact-buttons a.telegram {
+      background-color: #0088cc;
+    }
+
+    .contact-buttons a:hover {
+      opacity: 0.85;
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 15px 0;
+      background-color: #1a1a1a;
+      font-size: 14px;
+      color: #888;
+      animation: fadeIn 2.5s ease forwards;
+      border-top: 1px solid #333;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    
+    .app-screenshots {
+      padding: 10px 20px 30px;
+      margin-top: 40px;
+      margin-bottom: -40px;
+      animation: fadeInUp 1s ease both;
+    }
+
+    .features-section {
+      margin-bottom: 10px;
+    }
+
+    .scroll-gallery {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+      padding: 15px 5px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .scroll-gallery img {
+      flex-shrink: 0;
+      width: 180px;
+      height: auto;
+      border-radius: 12px;
+      scroll-snap-align: start;
+      border: 1px solid rgba(255, 193, 7, 0.333); /* تغيير اللون الأخضر إلى #ffc107 */
+      transition: transform 0.3s;
+    }
+
+    .scroll-gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    .logo-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+    }
+
+    .logo-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      position: relative;
+      z-index: 2;
+      border: 1px solid #eee;
+      background-color: #fff;
+    }
+
+    .rotating-ring {
+      position: absolute;
+      top: -12px;
+      left: -14px;
+      width: 140px;
+      height: 140px;
+      border: 3px dashed #ffc107; /* تغيير اللون الأخضر إلى #ffc107 */
+      border-radius: 50%;
+      animation: spin 5s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .section-divider {
+      border: 0;
+      height: 2px;
+      margin: 0px auto 0px;
+      background: linear-gradient(to left, transparent, #ffc107, transparent); /* تغيير اللون الأخضر إلى #ffc107 */
+      width: 80%;
+    }
+
+    /* أنماط قسم المميزات */
+    .features-section {
+      background: linear-gradient(135deg, #000, #222, #000);
+      padding: 80px 20px;
+      color: white;
+      font-family: 'Cairo', sans-serif;
+      direction: rtl;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .features-badge {
+      display: inline-block;
+      background: #ffc107; /* تغيير اللون الأخضر إلى #ffc107 */
+      color: #000;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .features-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 600px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 900px) {
+      .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .feature-row {
+      background: linear-gradient(135deg, #222, #444, #222);
+      border: 1px solid rgba(255, 193, 7, 0.333); /* تغيير اللون الأخضر إلى #ffc107 */
+      border-radius: 10px;
+      padding: 25px 20px;
+      text-align: center;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+    .feature-row:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(255, 193, 7, 0.1); /* تغيير اللون الأخضر إلى #ffc107 */
+    }
+
+    .feature-icon {
+      background: rgba(255, 193, 7, 0.15); /* تغيير اللون الأخضر إلى #ffc107 */
+      color: #ffc107; /* تغيير اللون الأخضر إلى #ffc107 */
+      font-size: 30px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feature-text h3 {
+      font-size: 18px;
+      margin: 0 0 8px 0;
+      color: #ffffff;
+    }
+
+    .feature-text p {
+      font-size: 15px;
+      margin: 0;
+      color: #bbbbbb;
+    }
+
+    /* أنماط معرض الصور */
+    .screenshots-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: 1fr;
+      padding: 0 20px 60px;
+      animation: fadeInUp 1s ease both;
+    }
+
+    @media (min-width: 600px) {
+      .screenshots-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 900px) {
+      .screenshots-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .screenshot-card {
+      background-color: #2a2a2a;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 193, 7, 0.333); /* تغيير اللون الأخضر إلى #ffc107 */
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .screenshot-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(255, 193, 7, 0.1); /* تغيير اللون الأخضر إلى #ffc107 */
+    }
+
+    .screenshot-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .screenshots-slider {
+      display: flex;
+      overflow-x: auto;
+      gap: 16px;
+      padding: 20px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .screenshot-card {
+      flex: 0 0 auto;
+      width: 160px;
+      background-color: #2a2a2a;
+      padding: 5px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 193, 7, 0.333); /* تغيير اللون الأخضر إلى #ffc107 */
+      scroll-snap-align: start;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .screenshot-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(255, 193, 7, 0.15); /* تغيير اللون الأخضر إلى #ffc107 */
+    }
+
+    .screenshot-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo-container">
+      <div class="rotating-ring"></div>
+      <img src="https://up6.cc/2025/08/175625686129591.jpg"  class="logo-image">
+    </div>
+
+    <h1>Magic Connect</h1>
+    <p>أفضل تطبيق لمشاهدة القنوات على جميع الأجهزة بجودة عالية وبدون تقطيع</p>
+
+    <button class="btn" onclick="window.location.href='https://www.mediafire.com/file/emwe2mhm3v64wvt/MagicConnect.apk/file'">
+      تحميل التطبيق
+    </button>
+
+    <button class="btn" onclick="window.location.href='https://t.me/magicconnectapp/27'">
+      تحميل كود التفعيل
+    </button>
+
+    <!-- كود داونلودر Storm Connect -->
+    <div class="downloader">
+      كود الداونلودر للتطبيق :<br>
+      <span style="font-size: 22px; color: white;">6920644</span>
+    </div>
+
+    <button class="btn" onclick="window.location.href='https://www.mediafire.com/file/0txpj4m208uby36/Magic+Player.apk/file'">
+      تحميل المشغل
+    </button>
+
+    <div class="downloader">
+      كود الداونلودر للمشغل :<br>
+      <span style="font-size: 22px; color: white;">1082828</span>
+    </div>
+  </header>
+
+  <hr class="section-divider">
+
+  <section class="features-section">
+    <div class="features-header">
+      <div class="features-badge">مميزات التطبيق</div>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-row">
+        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+        <div class="feature-text">
+          <h3>أداء سريع</h3>
+          <p>تشغيل فوري وسلس للقنوات دون تحميل أو تقطيع مهما كانت السرعة</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+        <div class="feature-text">
+          <h3>تشغيل على كل الأجهزة</h3>
+          <p>متوافق تمامًا مع الهواتف والشاشات وAndroid TV وTV Box</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-icon"><i class="fas fa-layer-group"></i></div>
+        <div class="feature-text">
+          <h3>واجهة ذكية</h3>
+          <p>تصميم مبسط بتصنيفات منظمة للوصول السريع لكل قناة</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-icon"><i class="fas fa-sync-alt"></i></div>
+        <div class="feature-text">
+          <h3>تحديث تلقائي</h3>
+          <p>تجدد القنوات والمحتوى بشكل يومي بدون تدخل أو انتظار</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-icon"><i class="fas fa-headset"></i></div>
+        <div class="feature-text">
+          <h3>دعم فني فوري</h3>
+          <p>تواصل مباشر مع فريق الدعم لحل أي مشكلة بسرعة فائقة</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- معرض صور التطبيق -->
+  <section class="app-screenshots">
+    <div class="features-header">
+      <div class="features-badge">صور من داخل التطبيق</div>
+    </div>
+    <div class="screenshots-slider">
+      <div class="screenshot-card"><img src="https://up6.cc/2025/08/175625725055951.jpg"></div>
+      <div class="screenshot-card"><img src="https://up6.cc/2025/08/175625725060952.jpg"></div>
+      <div class="screenshot-card"><img src="https://up6.cc/2025/08/175625725063473.jpg"></div>
+      <div class="screenshot-card"><img src="https://up6.cc/2025/08/175625725067214.jpg"></div>
+      <div class="screenshot-card"><img src="https://up6.cc/2025/08/175625725070675.jpg"></div>
+      <div class="screenshot-card"><img src="https://up6.cc/2025/08/175625736084011.jpg"></div>
+      <div class="screenshot-card"><img src="https://up6.cc/2025/08/17562573608672.jpg"></div>
+      <div class="screenshot-card"><img src="https://up6.cc/2025/08/175625736090423.jpg"></div>
+      <div class="screenshot-card"><img src="https://up6.cc/2025/08/175625736093374.jpg"></div>
+      <div class="screenshot-card"><img src="https://up6.cc/2025/08/175625736096495.jpg"></div>
+      
+    </div>
+  </section>
+
+  <!-- أزرار التواصل -->
+  <div class="contact-buttons">
+    <a href="https://wa.me/+201080298335" target="_blank">
+      <i class="fab fa-whatsapp"></i> واتساب
+    </a>
+    <a href="https://t.me/magicconnectapp" class="telegram" target="_blank">
+      <i class="fab fa-telegram"></i> تيليجرام
+    </a>
+  </div>
+
+  <!-- الفوتر -->
+  <footer>
+    جميع الحقوق محفوظة © Magic Connect 2025
+  </footer>
+</body>
+</html>
